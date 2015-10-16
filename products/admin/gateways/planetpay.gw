@@ -1,0 +1,115 @@
+<?php
+// Planet Payment...
+$gatewayname = "Planet Payment";
+$paymenturl = "https://secure.planetpayment.com/gateway/transact.dll";
+$postbackurl = "$ashopurl/order.php";
+$visibleorderprocessing = "TRUE";
+$resultpagessl = "FALSE";
+$sendpayoptionid = "FALSE";
+$gw_orderid = "x_Invoice_Num";
+$gw_amount = "x_Amount";
+$gw_merchantid = "x_Login";
+$gw_logourl = "x_Logo_URL";
+$gw_vspartner = "";
+$gw_pageid = "";
+$gw_description = "x_Description";
+$gw_returnurl1 = "x_Relay_URL";
+$gw_returnurl2 = "";
+$gw_cancel = "";
+$gw_basket = "productid";
+$gw_affiliate = "affiliate";
+$gw_bgcolor = "x_Color_Background";
+$gw_bgurl = "x_Background_URL";
+
+$gw_extrafields = "<input type=\"hidden\" name=\"x_Version\" value=\"3.1\">\n
+              <input type=\"hidden\" name=\"x_Method\" value=\"CC\">\n
+		      <input type=\"hidden\" name=\"x_Show_Form\" value=\"PAYMENT_FORM\">
+			  <input type=\"hidden\" name=\"x_Relay_Response\" value=\"True\">
+		      <input type=\"hidden\" name=\"x_Receipt_Link_Method\" value=\"POST\">
+		      <input type=\"hidden\" name=\"x_Receipt_Link_Text\" value=\"CLICK HERE TO COMPLETE THIS TRANSACTION!\">";
+$testrequest = "<input type=\"hidden\" name=\"x_Test_Request\" value=\"true\">\n";
+
+$gw_parameters['merchantid'] = "true";
+$gw_parameters['secret'] = "false";
+$gw_parameters['transactionkey'] = "true";
+$gw_parameters['logourl'] = "true";
+$gw_parameters['vspartner'] = "false";
+$gw_parameters['pageid'] = "false";
+$gw_parameters['testmode'] = "true";
+$gw_parameters['autodelivery'] = "true";
+$gw_parameters['deliverpending'] = "false";
+$gw_parameters['gwbgcolor'] = "true";
+$gw_parameters['gwbgurl'] = "true";
+$gw_parameters['paymentinfo'] = "false";
+$gw_parameters['telesign'] = "false";
+
+if ( ! function_exists('authenticate') ) {
+	function authenticate($gateway_input, $securityhash, $merchant) {
+		if ($gateway_input['x_response_code'] != 1) $response = "unauthorized";
+		if ($securityhash) {
+			$securityhashstring = strtoupper(md5($secret.$merchant.$gateway_input['x_trans_id'].$gateway_input['x_amount']));
+			if ($securityhashstring != $gateway_input['x_MD5_Hash']) $checksum = "unauthorized";
+		}
+		if ($response == "unauthorized" || $checksum == "unauthorized") $validate[0] = "INVALID";
+		else $validate[0] = "VERIFIED";
+		if ($gateway_input['x_response_reason_text']) $validate[1] = $gateway_input['x_response_reason_text'];
+		return $validate;
+	}
+}
+
+if ( ! function_exists('process_payment') ) {
+	function process_payment($user, $password, $vspartner, $cardtype, $ccnumber, $seccode, $expdate, $amount, $invoice, $firstname, $lastname, $address, $city, $zip, $state, $country, $phone, $email, $testmode, $description) {
+	}
+}
+
+if ( ! function_exists('parse_response') ) {
+	function parse_response($gateway_input) {
+		$response['invoicenum']=$gateway_input['x_invoice_num'];
+		$response['email']=$gateway_input['x_email'];
+		$response['firstname']=$gateway_input['x_first_name'];
+		$response['lastname']=$gateway_input['x_last_name'];
+		$response['address']=$gateway_input['x_address'];
+		$response['zip']=$gateway_input['x_zip'];
+		$response['city']=$gateway_input['x_city'];
+		$response['state']=$gateway_input['x_state'];
+		$response['country']=$gateway_input['x_country'];
+		$response['remoteorderid']=$gateway_input['x_trans_id'];
+		$response['phone']=$gateway_input['x_phone'];
+		$response['price']=$gateway_input['x_amount'];
+		$response['products']=$gateway_input['productid'];
+		$response['description']=$gateway_input['x_description'];
+		$response['affiliate']=$gateway_input['affiliate'];
+		return $response;
+	}
+}
+
+if ( ! function_exists('hmac') ) {
+	function hmac ($key, $data)
+	{
+		$b = 64; // byte length for md5
+		if (strlen($key) > $b) {
+			$key = pack("H*",md5($key));
+		}
+		$key  = str_pad($key, $b, chr(0x00));
+		$ipad = str_pad('', $b, chr(0x36));
+		$opad = str_pad('', $b, chr(0x5c));
+		$k_ipad = $key ^ $ipad ;
+		$k_opad = $key ^ $opad;
+
+		return md5($k_opad  . pack("H*",md5($k_ipad . $data)));
+	}
+}
+
+if ( ! function_exists('generate_fingerprint') ) {
+	function generate_fingerprint($txnkey, $loginid, $amount) {
+		$currency = "";
+		srand(time());
+		$sequence = rand(1, 1000);
+		$tstamp = time ();
+		$fingerprint = hmac($txnkey, $loginid."^".$sequence."^".$tstamp."^".$amount."^".$currency);
+		echo ('<input type="hidden" name="x_fp_sequence" value="' . $sequence . '">' );
+		echo ('<input type="hidden" name="x_fp_timestamp" value="' . $tstamp . '">' );
+		echo ('<input type="hidden" name="x_fp_hash" value="' . $fingerprint . '">' );
+	} 
+}
+?>

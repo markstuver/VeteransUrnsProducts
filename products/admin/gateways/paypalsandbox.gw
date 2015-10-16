@@ -1,0 +1,178 @@
+<?php
+// PayPal...
+$debugemail = "you@yourwebsite.com";
+$gatewayname = "PayPal Sandbox";
+$paymenturl = "https://www.sandbox.paypal.com/cgi-bin/webscr";
+$postbackurl = "$ashopurl/order.php";
+$visibleorderprocessing = "FALSE";
+$resultpagessl = "FALSE";
+$sendpayoptionid = "FALSE";
+$gw_orderid = "invoice";
+$gw_amount = "";
+$gw_merchantid = "business";
+$gw_logourl = "image_url";
+$gw_vspartner = "";
+$gw_pageid = "";
+$gw_description = "";
+$gw_returnurl1 = "notify_url";
+$gw_returnurl2 = "return";
+$gw_cancel = "cancel_return";
+$gw_basket = "custom";
+$gw_affiliate = "";
+$gw_bgcolor = "";
+$gw_bgurl = "";
+$gw_firstname = "first_name";
+$gw_lastname = "last_name";
+$gw_address = "address1";
+$gw_city = "city";
+$gw_zip = "zip";
+$gw_state = "state";
+$gw_country = "lc";
+$gw_email = "";
+$gw_phone = "night_phone_a";
+$gw_shipfirstname = "";
+$gw_shiplastname = "";
+$gw_shipaddress = "";
+$gw_shipcity = "";
+$gw_shipzip = "";
+$gw_shipstate = "";
+$gw_shipcountry = "";
+
+$gw_extrafields = "
+		      <input type=\"hidden\" name=\"undefined_quantity\" value=\"0\">
+		      <input type=\"hidden\" name=\"no_shipping\" value=\"2\">
+		      <input type=\"hidden\" name=\"no_note\" value=\"1\">
+			  <input type=\"hidden\" name=\"bn\" value=\"AShopSoftware_ShoppingCart_WPS_US\">";
+if (!empty($recurringtotal) && is_numeric($recurringtotal) && $recurringtotal > 0) {
+	$gw_amount = "a1";
+	$gw_description = "item_name";
+
+	$recurringtotal = number_format($recurringtotal,2,'.','');
+	$gw_extrafields .= "
+	<input type=\"hidden\" name=\"cmd\" value=\"_xclick-subscriptions\">
+	<input type=\"hidden\" name=\"p1\" value=\"$initialperiod\">
+	<input type=\"hidden\" name=\"t1\" value=\"$initialperiodunits\">
+	<input type=\"hidden\" name=\"a3\" value=\"$recurringtotal\">
+	<input type=\"hidden\" name=\"p3\" value=\"$recurringperiod\">
+	<input type=\"hidden\" name=\"t3\" value=\"$recurringperiodunits\">
+	<input type=\"hidden\" name=\"src\" value=\"1\">
+	<input type=\"hidden\" name=\"sra\" value=\"1\">
+	";
+	if ($rebills) $gw_extrafields .= "<input type=\"hidden\" name=\"srt\" value=\"$rebills\">
+	";
+} else $gw_extrafields .= "<input type=\"hidden\" name=\"cmd\" value=\"_cart\">
+	<input type=\"hidden\" name=\"upload\" value=\"1\">";
+
+$testrequest = "";
+
+$gw_parameters['merchantid'] = "true";
+$gw_parameters['secret'] = "false";
+$gw_parameters['transactionkey'] = "false";
+$gw_parameters['logourl'] = "true";
+$gw_parameters['vspartner'] = "false";
+$gw_parameters['pageid'] = "false";
+$gw_parameters['testmode'] = "false";
+$gw_parameters['autodelivery'] = "false";
+$gw_parameters['deliverpending'] = "false";
+$gw_parameters['gwbgcolor'] = "false";
+$gw_parameters['gwbgurl'] = "false";
+$gw_parameters['paymentinfo'] = "false";
+$gw_parameters['telesign'] = "false";
+$gw_parameters['initialperiod'] = "true";
+$gw_parameters['recurringperiod'] = "true";
+$gw_parameters['rebills'] = "true";
+
+if ( ! function_exists('authenticate') ) {
+	function authenticate($gateway_input, $securityhash, $merchant) {
+		global $debugemail, $ashoppath;
+		@ashop_mail("$debugemail","PayPal Debug 1","IPN successfully received from PayPal");
+		if ($gateway_input['txn_type'] != "reversal") {
+			foreach ($gateway_input as $key => $value) {
+				$paypalcheck .= $key . '=' . str_replace("%5C%27", "'", urlencode($value)) . '&';
+			}
+			$paypalcheck .= "cmd=_notify-validate";
+			$paypalcheck = str_replace("%5C%22", "\"", $paypalcheck);
+			@ashop_mail("$debugemail","PayPal Debug 2","Contents of IPN: $paypalcheck");
+			if (function_exists('curl_version')) {
+				$curlversion = curl_version();
+				@ashop_mail("$debugemail","PayPal Debug 3","Using Curl to authenticate IPN");
+				if (strstr($curlversion, "SSL") || (is_array($curlversion) && (strstr($curlversion["ssl_version"], "SSL") || strstr($curlversion["ssl_version"], "NSS")))) {
+					@ashop_mail("$debugemail","PayPal Debug 4","Curl is installed with support for SSL");
+					$ch = curl_init();
+					if (file_exists("$ashoppath/admin/curl.inc.php")) include "$ashoppath/admin/curl.inc.php";
+					curl_setopt($ch, CURLOPT_URL,"https://www.sandbox.paypal.com/cgi-bin/webscr");
+					curl_setopt($ch, CURLOPT_POST, 1);
+					curl_setopt($ch, CURLOPT_POSTFIELDS, $paypalcheck);
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+					$validate[0]=curl_exec ($ch);
+					$curlerror = curl_error($ch);
+					if ($validate[0] != "VERIFIED") {
+						$validate[0] = "INVALID";
+						if ($curlerror) {
+							$validate[1] = "NOCURL";
+							$validate[2] = $curlerror;
+						} else $validate[1] = "SUSPECT";
+					}
+					curl_close ($ch);
+				} else @ashop_mail("$debugemail","PayPal Debug 5","Curl is installed but SSL support is missing");
+			} else {
+				@ashop_mail("$debugemail","PayPal Debug 6","Curl missing, using fsockopen to authenticate IPN");
+				$header .= "POST /cgi-bin/webscr HTTP/1.0\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: ".strlen ($paypalcheck)."\r\n\r\n";
+				$fp = fsockopen ("www.paypal.com", 80, $errno, $errstr, 30);
+				fputs ($fp, $header . $paypalcheck);
+				while (!feof($fp)) {
+					$res = fgets ($fp, 1024);
+					if (strcmp ($res, "VERIFIED") == 0) {
+						$validate[0] = "VERIFIED";
+					}
+					else if (strcmp ($res, "INVALID") == 0) {
+						$validate[0] = "INVALID";
+						$validate[1] = "SUSPECT";
+					}
+				}
+				fclose ($fp);
+			}
+			if ($gateway_input['receiver_email'] != $merchant && $gateway_input['receiver_id'] != $merchant) {
+				$validate[0] = "INVALID";
+				$validate[1] = "MERCHANTID";
+			}
+			if ($gateway_input['payment_status'] != "Completed") $validate[0] = "INVALID";
+			if ($validate[0] != "VERIFIED") $validate[0] = "INVALID";
+			else if ($gateway_input['txn_type'] == "subscr_payment") $validate[0] = "SUBSCRIPTION";
+			@ashop_mail("$debugemail","PayPal Debug 7","Result of IPN authentication: {$validate[0]}");
+			return $validate;
+		} else {
+			@ashop_mail("$debugemail","PayPal Debug 8","The transaction was marked by PayPal as a reversal");
+			$validate[0] = "INVALID";
+			$validate[1] = "REVERSAL";
+			return $validate;
+		}
+	}
+}
+
+if ( ! function_exists('process_payment') ) {
+	function process_payment($user, $password, $vspartner, $cardtype, $ccnumber, $seccode, $expdate, $amount, $invoice, $firstname, $lastname, $address, $city, $zip, $state, $country, $phone, $email, $testmode, $description) {
+	}
+}
+
+if ( ! function_exists('parse_response') ) {
+	function parse_response($gateway_input) {
+		$response['invoicenum']=$gateway_input['invoice'];
+		$response['email']=$gateway_input['payer_email'];
+		$response['firstname']=$gateway_input['first_name'];
+		$response['lastname']=$gateway_input['last_name'];
+		$response['address']=$gateway_input['address_street'];
+		$response['zip']=$gateway_input['address_zip'];
+		$response['city']=$gateway_input['address_city'];
+		$response['state']=$gateway_input['address_state'];
+		$response['country']=$gateway_input['address_country'];
+		$response['remoteorderid']=$gateway_input['txn_id'];
+		$response['phone']=$gateway_input['contact_phone'];
+		$response['price']=$gateway_input['payment_gross'];
+		$response['products']=$gateway_input['custom'];
+		$response['description']=$gateway_input['item_name'];
+		$response['affiliate']="";
+		return $response;
+	}
+}
+?>

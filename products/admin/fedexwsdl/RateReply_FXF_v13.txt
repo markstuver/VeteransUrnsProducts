@@ -1,0 +1,28 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <env:Header xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <env:Body xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <v13:RateReply xmlns:v13="http://fedex.com/ws/rate/v13">
+         <v13:HighestSeverity>ERROR</v13:HighestSeverity>
+         <v13:Notifications>
+            <v13:Severity>ERROR</v13:Severity>
+            <v13:Source>crs</v13:Source>
+            <v13:Code>487</v13:Code>
+            <v13:Message>One or more commodities in  this shipment cannot be auto-rated.</v13:Message>
+            <v13:LocalizedMessage>One or more commodities in  this shipment cannot be auto-rated.</v13:LocalizedMessage>
+         </v13:Notifications>
+         <v13:TransactionDetail>
+            <v13:CustomerTransactionId>PROCESS SHIPMENT</v13:CustomerTransactionId>
+            <v13:Localization>
+               <v13:LanguageCode>EN</v13:LanguageCode>
+               <v13:LocaleCode>ES</v13:LocaleCode>
+            </v13:Localization>
+         </v13:TransactionDetail>
+         <v13:Version>
+            <v13:ServiceId>crs</v13:ServiceId>
+            <v13:Major>13</v13:Major>
+            <v13:Intermediate>0</v13:Intermediate>
+            <v13:Minor>0</v13:Minor>
+         </v13:Version>
+      </v13:RateReply>
+   </env:Body>
+</soapenv:Envelope>

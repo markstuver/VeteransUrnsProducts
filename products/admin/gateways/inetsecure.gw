@@ -1,0 +1,83 @@
+<?php
+// Internet Secure...
+$gatewayname = "Internet Secure";
+$paymenturl = "https://secure.internetsecure.com/process.cgi";
+$postbackurl = "$ashopurl/order.php";
+$visibleorderprocessing = "FALSE";
+$resultpagessl = "FALSE";
+$sendpayoptionid = "FALSE";
+$gw_orderid = "xxxVar1";
+$gw_amount = "xxxVar2";
+$gw_merchantid = "GatewayID";
+$gw_logourl = "";
+$gw_vspartner = "";
+$gw_pageid = "";
+$gw_description = "xxxVar4";
+$gw_returnurl1 = "";
+$gw_returnurl2 = "ReturnURL";
+$gw_cancel = "xxxCancelURL";
+$gw_basket = "xxxVar3";
+$gw_affiliate = "xxxVar5";
+$gw_bgcolor = "";
+$gw_bgurl = "";
+$gw_address = "xxxAddress";
+$gw_city = "xxxCity";
+$gw_zip = "xxxPostal";
+$gw_state = "xxxProvince";
+$gw_country = "xxxCountry";
+$gw_email = "xxxEmail";
+$gw_phone = "xxxPhone";
+$gw_extrafields = "<input type=hidden name=\"language\" value=\"English\">\n<input type=hidden name=\"Products\" value=\"$isproductstring\">
+";
+$testrequest = "";
+
+$gw_parameters['merchantid'] = "true";
+$gw_parameters['secret'] = "false";
+$gw_parameters['transactionkey'] = "false";
+$gw_parameters['logourl'] = "false";
+$gw_parameters['vspartner'] = "false";
+$gw_parameters['pageid'] = "false";
+$gw_parameters['testmode'] = "false";
+$gw_parameters['autodelivery'] = "true";
+$gw_parameters['deliverpending'] = "false";
+$gw_parameters['gwbgcolor'] = "false";
+$gw_parameters['gwbgurl'] = "false";
+$gw_parameters['paymentinfo'] = "false";
+$gw_parameters['telesign'] = "false";
+
+if ( ! function_exists('authenticate') ) {
+	function authenticate($gateway_input, $securityhash, $merchant) {
+		if ($gateway_input['GatewayID'] == $merchant && $gateway_input['receiptnumber'] && strstr($gateway_input['ip_address'], ".")) $validate[0] = "VERIFIED";
+		else $validate[0] = "INVALID";
+		return $validate;
+	}
+}
+
+if ( ! function_exists('process_payment') ) {
+	function process_payment($user, $password, $vspartner, $cardtype, $ccnumber, $seccode, $expdate, $amount, $invoice, $firstname, $lastname, $address, $city, $zip, $state, $country, $phone, $email, $testmode, $description) {
+	}
+}
+
+if ( ! function_exists('parse_response') ) {
+	function parse_response($gateway_input) {
+		$response['invoicenum']=$gateway_input['xxxVar1'];
+		$response['email']=$gateway_input['xxxEmail'];
+		$fullname = $gateway_input['xxxName'];
+		$fullname = explode(" ", $fullname);
+		$response['firstname']=$fullname[0];
+		$response['lastname']=$fullname[count($fullname)-1];
+		$response['address']=$gateway_input['xxxAddress'];
+		$response['zip']=$gateway_input['xxxPostal'];
+		$response['city']=$gateway_input['xxxCity'];
+		$response['state']=$gateway_input['xxxProvince'];
+		$response['country']=$gateway_input['xxxCountry'];
+		$response['remoteorderid']=$gateway_input['receiptnumber'];
+		$response['phone']=$gateway_input['xxxPhone'];
+		$response['price']=$gateway_input['xxxVar2'];
+		$response['products']=$gateway_input['xxxVar3'];
+		$response['description']=$gateway_input['xxxVar4'];
+		$response['affiliate']=$gateway_input['xxxVar5'];
+		return $response;
+	}
+}
+?>

@@ -1,0 +1,35 @@
+<?php
+define('CHARSET', '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />');
+define('FIELDMISSING', 'Required field missing! Try again...');
+define('INCORRECTZIP', 'Incorrect zip code! Try again...');
+define('ONETIMENOTLOGGEDIN', 'You need to be logged in to use this discount coupon! Try again...');
+define('YOUFORGOT', 'You have forgotten something!');
+define('FILLINALL', 'You have to fill in all form fields!');
+define('CLOSEWINDOW', 'Close this window');
+define('PLEASEENTER', 'Please enter or confirm the destination for shipping and sales tax calculations...');
+define('SHIPPINGINFO', 'Shipping Options');
+define('TAXINFO', 'Enter the destination for sales tax calculation...');
+define('BUSINESS', 'Business name:');
+define('FIRSTNAME', 'First name:');
+define('LASTNAME', 'Last name:');
+define('ADDRESS1', 'Address 1:');
+define('ADDRESS2', 'Address 2:');
+define('CITY', 'City:');
+define('STATE', 'State/Province:');
+define('PHONE', 'Phone number:');
+define('EMAIL', 'Email');
+define('PROVINCE', 'Region:');
+define('ZIPCODE', 'Zip/Postal Code:');
+define('COUNTRY', 'Country:');
+define('ONLYSHIPTO1', '[ We only ship to these countries ]');
+define('ONLYSHIPTO2', '[ we only ship to this country ]');
+define('VATNUMBER', 'VAT number:');
+define('ABNNUMBER', 'ABN number:');
+define('REQUIREDFIELD', '* = Required field');
+define('CHOOSESTATE', 'choose state');
+define('NOTUSACAN', 'Not USA/Canada');
+define('CHOOSECOUNTRY', 'choose country');
+define('SUBMIT', 'Submit');
+define('RESET', 'Reset');
+define('ISSAMEASBILLING', 'This address is the same as my billing address.');
+?>

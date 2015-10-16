@@ -1,0 +1,68 @@
+<?php
+// S2Member Registration...
+$fulfilmentname = "S2Member Registration";
+   
+$ff_parameters['fulfilemail'] = "false";
+$ff_parameters['fulfilmessage'] = "false";
+$ff_parameters['userid'] = "false";
+$ff_parameters['password'] = "false";
+$ff_parameters['url'] = "true";
+$ff_parameters['parameternames'] = "false";
+$ff_parameters['extrafields'] = "false";
+$ff_parameters['returnresult'] = "true";
+$ff_parameters['discount'] = "false";
+$ff_parameters['ecardimage'] = "false";
+$ff_parameters['ecardfont'] = "false";
+$ff_parameters['ecardtextcolor'] = "false";
+$ff_parameters['ecardtexttop'] = "false";
+$ff_parameters['ecardtextleft'] = "false";
+$ff_parameters['ecardtextright'] = "false";
+
+$ff_prodparameters['productid'] = "false";
+$ff_prodparameters['productidlist'] = "false";
+$ff_prodparameters['labelnumber'] = "false";
+$ff_prodparameters['packagenumber'] = "false";
+$ff_prodparameters['parameternames'] = "true";
+
+if ($dofulfilment) {
+	$returnmessages["$fulfilmentoptionid"] = "";
+	if($productsinfo) foreach($productsinfo as $productnumber => $productinfo) {
+		$quantity = $productinfo["quantity"];
+		$paramquerystring = $productinfo["ffparamquerystring"];
+		$paramarray = explode("&",$paramquerystring);
+		if (!empty($paramarray) && is_array($paramarray)) foreach ($paramarray as $thisparameter) {
+			$thisparameterarray = explode("=",$thisparameter);
+			if ($thisparameterarray[0] == "level") $s2member_level = $thisparameterarray[1];
+		}
+
+		$fulfilmenturl = str_replace("[proxy-gateway]","AShop",$fulfilmenturl);
+		$s2member_domain = substr($fulfilmenturl,0,strpos($fulfilmenturl,"/?s2member_paypal_notify"));
+		$s2member_domain = str_replace("http://","",$s2member_domain);
+		$s2member_signupdate = date("H:i:s M j, Y T", time()+$timezoneoffset);
+		$s2member_data = "custom=$s2member_domain&item_number=$s2member_level&invoice=$invoiceid";
+		$s2member_data .= "&payment_type=instant&payment_date=$s2member_signupdate&payment_status=Completed&first_name=$parsed_firstname&last_name=$parsed_lastname&payer_email=$parsed_email&business=info@$s2member_domain&receiver_email=info@$s2member_domain&txn_type=web_accept&txn_id=$invoiceid&notify_version=2.1&initial_term=30";
+
+		if (!empty($invoiceid) && !empty($s2member_level) && !empty($fulfilmenturl)) {
+			for ($item = 0; $item < $quantity; $item++) {
+				$ch = curl_init ($fulfilmenturl);
+				curl_setopt ($ch, CURLOPT_POST, true);
+				curl_setopt ($ch, CURLOPT_POSTFIELDS, $s2member_data);
+				curl_setopt ($ch, CURLOPT_RETURNTRANSFER, true);
+				$res = curl_exec ($ch);
+
+				if ($receiptformat == "html") $returnmessages["$fulfilmentoptionid"] = "<tr><td colspan=\"2\"><table width=\"100%\" cellpadding=\"5\"><tr><td bgcolor=\"#ffffff\" align=\"left\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">Your membership signup link will be sent to you in a separate email.</font></td></tr></table></td></tr>";
+				else $returnmessages["$fulfilmentoptionid"] .= "Your membership signup link will be sent to you in a separate email.";
+
+			} 
+		} else {
+			if ($receiptformat == "html") $returnmessages["$fulfilmentoptionid"] = "<tr><td colspan=\"2\"><table width=\"100%\" cellpadding=\"5\"><tr><td bgcolor=\"#ffffff\" align=\"left\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">The membership signup was unsuccessful! Call the shop owner to get your membership activated manually.</font></td></tr></table></td></tr>";
+			else $returnmessages["$fulfilmentoptionid"] .= "The membership signup was unsuccessful! Call the shop owner to get your membership activated manually.";
+
+			// Notify shop administrator...
+			$message="<html><head></head><body><font face=\"$font\"><p>An S2Member signup request from $ashopname for the order $invoiceid failed!</p><p>Add this customer as a member manually using your WordPress admin panel at $s2member_domain.</body></html>";
+			$headers = "From: ".un_html($ashopname,1)."<$ashopemail>\nX-Sender: <$ashopemail>\nX-Mailer: PHP\nX-Priority: 3\nReturn-Path: <$ashopemail>\nMIME-Version: 1.0\nContent-Type: text/html; charset=iso-8859-1\n";
+			@ashop_mail("$ashopemail",un_html($ashopname,1)." - S2Member signup failed!","$message","$headers");
+		}
+	}
+}
+?>

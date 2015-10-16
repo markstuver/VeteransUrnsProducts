@@ -1,0 +1,22 @@
+Buy Upload Automation Example
+
+Installation instructions:
+
+1. Create a new MySQL database unless you want to use one you already have which has not currently got a table named "uploads".
+2. Edit the automationexamples/buyupload.php script with a text editor to set the configuration options. The $savepath variable must be set to the full filesystem path to the directory where the uploaded files will be saved. The $password variable is used to make sure that only you or your AShop scripts can add new allowed uploads to the database. The database variables should be set according to what you use to login to your MySQL database. The $allowedfiletypes can be set to a comma separated list of file extensions or to nothing to allow any type of file. The $notifyemail variable should be set to an email address where you will receive notifications of uploaded files.
+3. Run the automationexamples/buyupload.php script in a web browser to install the database table.
+4. Login to your AShop admin panel and open the page Store Configuration->Fulfilment.
+5. Add a new Automation fulfilment option and set its' URL to where the buyupload.php script is located on your site.
+6. Make sure the Fieldname - order ID is set to: "orderid".
+7. Enter the text: "pass=mypassword" (changing the "mypassword" part to what you set the $password variable to in the buyupload.php script) in the text box labeled: "Other fields + values" and click Update to save the settings.
+8. Open the page Store Configuration->Payment.
+9. Edit the text box Thank You Message for your payment option and add the following html code:
+
+<form action="automationexamples/buyupload.php" method="post" enctype="multipart/form-data" name="productform"><input type="hidden" name="orderid" value="%orderid%"><input type="file" name="uploadfile"><br><input type="submit" value="Upload"></form>
+
+Make sure that the action parameter of the form tag contains the right URL to your buyupload.php script if you have placed it in another directory than the default on your site.
+
+10. Add a product that will be used to sell the uploads.
+11. Click the Fulfilment button for the new product and select the new automation fulfilment option.
+
+Whenever a customer buys the product the order ID will now be added to the database used by the buyupload.php script which will allow them to upload one file to the directory you have specified in the script. The thank you page presented to the customer upon payment will contain a file selection box that the customer can use to select and upload a file. When the file has been successfully uploaded you will receive an email about this.

@@ -1,0 +1,89 @@
+<?php
+// Automation...
+$fulfilmentname = "Unlock Key Pool";
+   
+$ff_parameters['fulfilemail'] = "false";
+$ff_parameters['fulfilmessage'] = "false";
+$ff_parameters['userid'] = "false";
+$ff_parameters['password'] = "false";
+$ff_parameters['url'] = "false";
+$ff_parameters['parameternames'] = "false";
+$ff_parameters['extrafields'] = "false";
+$ff_parameters['returnresult'] = "false";
+$ff_parameters['discount'] = "false";
+$ff_parameters['ecardimage'] = "false";
+$ff_parameters['ecardfont'] = "false";
+$ff_parameters['ecardtextcolor'] = "false";
+$ff_parameters['ecardtexttop'] = "false";
+$ff_parameters['ecardtextleft'] = "false";
+$ff_parameters['ecardtextright'] = "false";
+
+$ff_prodparameters['productid'] = "false";
+$ff_prodparameters['productidlist'] = "true";
+$ff_prodparameters['labelnumber'] = "false";
+$ff_prodparameters['packagenumber'] = "false";
+$ff_prodparameters['parameternames'] = "false";
+
+if ($dofulfilment) {
+	$adminunlockkeystring = "";
+	if($productsinfo) foreach($productsinfo as $productnumber => $productinfo) {
+		$productid = $productinfo["productid"];
+		$quantity = $productinfo["quantity"];
+		$productinfo["ffproductid"] = str_replace("|",",",$productinfo["ffproductid"]);
+		$productinfo["ffproductid"] = str_replace(":",",",$productinfo["ffproductid"]);
+		$productinfo["ffproductid"] = str_replace(";",",",$productinfo["ffproductid"]);
+		$repositoryproducts = explode(",",$productinfo["ffproductid"]);
+		$thisproductname = $productinfo["name"];
+		for ($item = 0; $item < $quantity; $item++) {
+			foreach ($repositoryproducts as $repositoryproduct) {
+				$repositoryproduct = trim($repositoryproduct);
+				$sql="SELECT * FROM unlockkeys WHERE productid='$repositoryproduct' AND orderid IS NULL";
+				$result = @mysqli_query($db, "$sql");
+				$numberofkeys = @mysqli_num_rows($result)-1;
+				if ($randomkeycodes == "1") {
+					// Select a random unused unlock key for this product...
+					list($usec, $sec) = explode(' ', microtime());
+					$make_seed = (float) $sec + ((float) $usec * 100000);
+					mt_srand($make_seed);
+					$randval = mt_rand(0, $numberofkeys);
+					$keytext = @mysqli_result($result,$randval,"keytext");
+					$keyid = @mysqli_result($result,$randval,"keyid");
+				} else {
+					$keytext = @mysqli_result($result,0,"keytext");
+					$keyid = @mysqli_result($result,0,"keyid");
+				}
+				if (!empty($keycodeencryptionkey) && !empty($keytext)) {
+					$keytext = trim($keytext);
+					$keytext = ashop_decrypt($keytext, $keycodeencryptionkey);
+				}
+				if (!$keytext && !$thisnoticesent) {
+					if ($unlockkeystring) $unlockkeystring .= "\n";
+					$unlockkeystring .= "Your unlock key for $thisproductname will soon be sent to you by email.\n";
+					$adminunlockkeystring.="<p>A customer has purchased <b>$thisproductname</b> but there was no unused unlock key available in the database for the shop $ashopname! Send an unlock key by email to <a href=\"mailto:$parsed_email\">".stripslashes($parsed_firstname)." ".stripslashes($parsed_lastname)."</a>. You should also <a href=\"$ashopurl/admin\">click here</a> to login to the administration area for your shop. From there you will be able to refill the unlock keys by editing the product in your catalogue.</p>";
+				} else {
+					if ($receiptformat == "html") $unlockkeystring.="$thisproductname: <br><b>$keytext</b><br>";
+					else $unlockkeystring .= "$thisproductname: $keytext\r\n";
+				}
+
+				// Assign this unlock key to the customer...
+				$sql="UPDATE unlockkeys SET orderid='$parsed_invoice' WHERE keyid='$keyid'";
+				$result = @mysqli_query($db, "$sql");
+
+				// Alert shop administrator if the database is running low on available keys...
+				if ($keytext && $numberofkeys < 5) {
+					$adminunlockkeystring.="<p>The number of unused unlock keys for <b>$thisproductname</b> in the shop $ashopname is low! <a href=\"$ashopurl\admin\">Click here</a> to login to the administration area for your shop. From there you will be able to refill the unlock keys by editing the product in your catalogue.</p>";
+				}
+			}
+		}
+	}
+
+	// Send admin alerts if any...
+	if ($adminunlockkeystring) {
+		$adminunlockmessage="<html><head><title>$ashopname - Unlock Key Notice</title></head><body><font face=\"$font\">";
+		if ($adminunlockkeystring) $adminunlockmessage.= "$adminunlockkeystring";	
+		$adminunlockmessage.="</font></body></html>";
+		$headers = "From: ".un_html($ashopname,1)."<$ashopemail>\nX-Sender: <$ashopemail>\nX-Mailer: PHP\nX-Priority: 3\nReturn-Path: <$ashopemail>\nMIME-Version: 1.0\nContent-Type: text/html; charset=iso-8859-1\n";
+		@ashop_mail("$ashopemail",un_html($ashopname,1)." - Unlock Key Notice: $orderid","$adminunlockmessage","$headers");
+	}
+}
+?>

@@ -1,0 +1,54 @@
+RECEIPT from %ashopname%
+Order Date: %dateshort%
+Reference: %invoice%
+Purchase order: %purchaseorder%
+
+======== SOLD TO ========
+%customer_business%
+%customer_firstname% %customer_lastname%
+%customer_address%
+%customer_city%, %customer_state% %customer_zip%
+%customer_country%
+%customer_email%, %customer_phone%
+%customer_info%
+
+======== ORDER DETAILS ========
+%receipt_description%
+
+Subtotal: %subtotal%
+Tax: %salestax%
+Shipping: %shipping%
+<!-- Shippingdiscount -->Discount: -%shippingdiscount%<!-- /Shippingdiscount -->
+Total Amount: %amount%
+Paid By: %payoption% %payoptionfee%
+<!-- Specialinstructions -->
+======== SPECIAL INSTRUCTIONS ========
+<!-- Shippingaddress -->
+-------- Ship To --------
+%customer_shippingaddress%
+<!-- Shippingoption -->
+Selected shipping option: %shipoptions%
+<!-- /Shippingoption -->
+<!-- /Shippingaddress -->
+<!-- Downloads -->
+-------- Product File Download(s) --------
+Product File Download: %ashopurl%/deliver.html
+Login eMail: %customer_email%
+Password: %password%
+
+If you experience any difficulty with this download or lose your connection before the download is complete, use the link and password from your e-mail receipt for a fresh download. Your password will be valid for %downloadtimes% downloads within %downloaddays% day(s).
+<!-- /Downloads -->
+<!-- Unlockkeys -->
+------------ Software Registration Key(s) --------
+%unlockkeys%
+<!-- /Unlockkeys -->
+<!-- Manualpayment -->
+-------- Payment Processing --------
+A manual payment method has been selected for this order. Orders will be fulfilled upon receipt of payment by check or other means.
+<!-- /Manualpayment -->
+<!-- /Specialinstructions -->
+======== MERCHANT INFORMATION ========
+%ashopname%
+%ashopaddress%
+%ashopemail%
+%ashopphone%

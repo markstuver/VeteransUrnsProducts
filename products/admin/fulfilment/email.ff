@@ -1,0 +1,44 @@
+<?php
+// Email...
+$fulfilmentname = "Email";
+   
+$ff_parameters['fulfilemail'] = "true";
+$ff_parameters['fulfilmessage'] = "true";
+$ff_parameters['userid'] = "false";
+$ff_parameters['password'] = "false";
+$ff_parameters['url'] = "false";
+$ff_parameters['parameternames'] = "false";
+$ff_parameters['extrafields'] = "false";
+$ff_parameters['returnresult'] = "false";
+$ff_parameters['discount'] = "false";
+$ff_parameters['ecardimage'] = "false";
+$ff_parameters['ecardfont'] = "false";
+$ff_parameters['ecardtextcolor'] = "false";
+$ff_parameters['ecardtexttop'] = "false";
+$ff_parameters['ecardtextleft'] = "false";
+$ff_parameters['ecardtextright'] = "false";
+
+$ff_prodparameters['productid'] = "false";
+$ff_prodparameters['productidlist'] = "false";
+$ff_prodparameters['labelnumber'] = "false";
+$ff_prodparameters['packagenumber'] = "false";
+$ff_prodparameters['parameternames'] = "false";
+
+if ($dofulfilment) {
+	$fulfilmentstring = "";
+	if($productsinfo) foreach($productsinfo as $productnumber => $productinfo) if($productinfo) $fulfilmentstring .= $productinfo["quantity"].": ".$productinfo["sku"]." - ".$productinfo["name"];
+
+	// Create fulfilment mail...
+	$message="<html><head><title>$ashopname - Order</title></head><body><font face=\"$font\"><p>$fulfilmentmessage</p><p>$date</p><p><b>Order ID:</b> $invoiceid <br><b>Customer:</b> $customerid $parsed_firstname $parsed_lastname<br><b>Email:</b> $parsed_email<br><b>Address:</b> $parsed_address, $parsed_zip, $parsed_city, $parsed_state, $parsed_country<br><b>Phone:</b> $parsed_phone";
+	$message .= "</p><p><b>Products:</b> $fulfilmentstring<br><b>Price:</b> $parsed_price</p>";
+	if ($shipto) {
+		$message .= "<p><b>Send the products ";
+		if ($selectedshipoptions) $message .= "by <b><font color=\"#FF0000\">$selectedshipoptions</font></b> ";
+		$message .= "to:</b><br><blockquote>$shipto</blockquote></p>";
+	}
+	$message.="<p align=\"center\"><i>from:</i><br><b>$ashopname</b><br>$ashopaddress<br>$ashopemail<br>$ashopphone</p></font></body></html>";
+	$headers = "From: $ashopname<$ashopemail>\nX-Sender: <$ashopemail>\nX-Mailer: PHP\nX-Priority: 3\nReturn-Path: <$ashopemail>\nMIME-Version: 1.0\nContent-Type: text/html; charset=iso-8859-1\n";
+
+	@ashop_mail("$fulfilmentemail","$ashopname - order ID: $invoiceid","$message","$headers");
+}
+?>

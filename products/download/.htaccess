@@ -1,0 +1,4 @@
+Options +FollowSymLinks
+Options +Indexes
+RewriteEngine on
+RewriteRule ^(.*)$ ../download.php?$1 [NC]

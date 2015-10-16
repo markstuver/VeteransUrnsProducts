@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+  <TITLE> Login Form </TITLE>
+ </HEAD>
+
+<BODY bgcolor="#FFFFFF" text="#FFFFFF">
+<CENTER>
+<table width="100%" height="100%">
+<tr><td align="center">
+	<form action="login.php" method="post">
+	<table width="300" cellpadding="0" cellspacing="0" border="1" bordercolor="#000000" bgcolor="#7589e7">
+		<tr><td align="center">
+			<table width="100%" cellpadding="0" cellspacing="0" border="0">
+				<tr><td align="center"><br>
+					<img src="../images/logo.gif" border="0" alt="Company Logo"></a><br><br>
+					<font face="Arial, Helvetica, sans-serif" size="4">Login</font><br>
+					<font face="Arial, Helvetica, sans-serif" size="2" color="#CC0000"><b>Wrong password!<br>Try again!</b></font>
+				</td></tr>
+			</table>
+			<table width="220" cellpadding="0" cellspacing="0" border="0">
+				<tr><td align="right">
+					<font face="Arial, Helvetica, sans-serif" size="2" color="#000000">Username:</font>
+				</td>
+				<td align="left">
+					<input type="text" name="username">
+					<script language="JavaScript">document.forms[0].username.focus();</script>
+				</td></tr>
+				<tr><td align="right">
+					<font face="Arial, Helvetica, sans-serif" size="2" color="#000000">Password:</font>
+				</td>
+				<td align="left">
+					<input type="password" name="password">
+				</td></tr>
+				<tr><td>&nbsp;</td>
+				<td align="right">
+					<br><input type="submit" value="Login"><br>
+				</td></tr>
+				<tr><td colspan="2">
+					<a href="sendpass.php"><font face="Arial, Helvetica, sans-serif" size="2" color="#FFFFFF"><br><b>Did you forget your password?</b></font></a><br><br>
+				</td><td></td></tr>
+			</table>
+		</td></tr>
+	</table>
+	<input type="hidden" name="redirect" value="protectedpage.html">
+	<input type="hidden" name="subscriptionid" value="173">
+	</form>
+</td></tr></table>
+</BODY>
+</HTML>

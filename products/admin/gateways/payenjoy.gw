@@ -1,0 +1,94 @@
+<?php
+// VoicePay...
+$gatewayname = "Payenjoy";
+$paymenturl = "$ashopsurl/orderform.php";
+$paymenturl2 = "$ashopsurl/payment/payenjoy.php";
+$postbackurl = "$ashopurl/order.php";
+$visibleorderprocessing = "FALSE";
+$resultpagessl = "FALSE";
+$sendpayoptionid = "TRUE";
+$gw_orderid = "invoice";
+$gw_amount = "";
+$gw_merchantid = "";
+$gw_logourl = "";
+$gw_vspartner = "";
+$gw_pageid = "";
+$gw_description = "description";
+$gw_returnurl1 = "";
+$gw_returnurl2 = "";
+$gw_cancel = "";
+$gw_basket = "";
+$gw_affiliate = "affiliate";
+$gw_bgcolor = "";
+$gw_bgurl = "";
+$gw_firstname = "firstname";
+$gw_lastname = "lastname";
+$gw_address = "address";
+$gw_city = "city";
+$gw_zip = "zip";
+$gw_state = "state";
+$gw_country = "country";
+$gw_email = "email";
+$gw_phone = "phone";
+$gw_shipfirstname = "";
+$gw_shiplastname = "";
+$gw_shipaddress = "";
+$gw_shipcity = "";
+$gw_shipzip = "";
+$gw_shipstate = "";
+$gw_shipcountry = "";
+
+$gw_extrafields = "";
+$testrequest = "";
+
+$gw_parameters['merchantid'] = "true";
+$gw_parameters['secret'] = "true";
+$gw_parameters['transactionkey'] = "true";
+$gw_parameters['logourl'] = "false";
+$gw_parameters['vspartner'] = "false";
+$gw_parameters['pageid'] = "false";
+$gw_parameters['testmode'] = "true";
+$gw_parameters['autodelivery'] = "true";
+$gw_parameters['deliverpending'] = "false";
+$gw_parameters['gwbgcolor'] = "false";
+$gw_parameters['gwbgurl'] = "false";
+$gw_parameters['paymentinfo'] = "false";
+$gw_parameters['telesign'] = "false";
+
+if ( ! function_exists('authenticate') ) {
+	function authenticate($gateway_input, $securityhash, $merchant) {
+		if($gateway_input['remoteorderid'] && $gateway_input['responsemsg'] == "Success" && $gateway_input['scode'] == md5($gateway_input['remoteorderid'].$securityhash)) $validate[0] = "VERIFIED";
+		else {
+			$validate[0] = "INVALID";
+			$validate[1] = "SUSPECT";
+		}
+		return $validate;
+	}
+}
+
+if ( ! function_exists('process_payment') ) {
+	function process_payment($user, $password, $vspartner, $cardtype, $ccnumber, $seccode, $expdate, $amount, $invoice, $firstname, $lastname, $address, $city, $zip, $state, $country, $phone, $email, $testmode, $description) {
+	}
+}
+
+if ( ! function_exists('parse_response') ) {
+	function parse_response($gateway_input) {
+		$response['invoicenum']=$gateway_input['invoice'];
+		$response['email']=$gateway_input['email'];
+		$response['firstname']=$gateway_input['firstname'];
+		$response['lastname']=$gateway_input['lastname'];
+		$response['address']=$gateway_input['address'];
+		$response['zip']=$gateway_input['zip'];
+		$response['city']=$gateway_input['city'];
+		$response['state']=$gateway_input['state'];
+		$response['country']=$gateway_input['country'];
+		$response['remoteorderid']=$gateway_input['remoteorderid'];
+		$response['phone']=$gateway_input['phone'];
+		$response['price']=$gateway_input['amount'];
+		$response['products']=$gateway_input['products'];
+		$response['description']=$gateway_input['description'];
+		$response['affiliate']=$gateway_input['affiliate'];
+		return $response;
+	}
+}
+?>

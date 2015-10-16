@@ -1,0 +1,38 @@
+<?php
+define('CHARSET', '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />');
+define('DELIVERY', 'Product Delivery');
+define('DOWNLOADPRODUCTS', 'Download the products you have ordered by logging in with your email address and the password you have received by email.');
+define('PROBLEMS', 'If you run into problems or have any questions you are welcome to contact us at:');
+define('PHONE', 'Phone:');
+define('MAIL', 'Mail:');
+define('BACKTO', 'Back to ');
+define('EMAILASHOP', 'Email:');
+define('EMAILLOGIN', 'Email');
+define('PASSWORD', 'Password');
+define('LOGIN', 'Login');
+define('DOWNLOAD', 'Download');
+define('VIEW', 'View');
+define('WRONGPASS', ' - Wrong Password or Email!');
+define('PASSINCORRECT', 'The password or email you entered is incorrect!');
+define('TIMEEXPIREDTITLE', 'download time expired!');
+define('TIMEEXPIRED', 'Your allowed time to download the product(s) has expired!');
+define('WELCOME', 'Welcome');
+define('COPY', 'Your copy of ');
+define('UPDATECOPY', 'Your update for ');
+define('CAN', ' can be downloaded here');
+define('CANBEVIEWED', ' can be viewed here');
+define('ALREADY', 'You have already downloaded ');
+define('ALLOWED', ' the allowed number of times.');
+define('WHENCLICK', 'When you click the link above you will be asked if you want to save the file to disc or open it directly. Choose to ');
+define('SAVE', 'save it to disc');
+define('BROWSE', ' and browse to where you would like to save it.');
+define('VALID', 'Your password will be valid for ');
+define('PER', 'downloads within');
+define('CONNECTION', ' day(s). If you lose your connection during the download or have problems opening the file, you may reach the download page, using the link that was e-mailed with your password.');
+define('CONTACT', 'To report problems or get assistance, contact the ');
+define('ADMIN', 'store administrator');
+define('WRONG', ' - wrong delivery password!');
+define('WRONGDELIV', 'Wrong delivery password!');
+define('NOACCESS', 'You don\'t have access to this area or you have mistyped your password.');
+define('TRYAGAIN', 'Try again!');
+?>

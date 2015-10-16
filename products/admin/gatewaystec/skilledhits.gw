@@ -1,0 +1,75 @@
+<?php
+// SkilledHits...
+$gatewayname = "SkilledHits";
+$paymenturl = "http://skilledhits.com/gateway/transaction.php";
+$postbackurl = "$ashopurl/order.php";
+$visibleorderprocessing = "TRUE";
+$resultpagessl = "FALSE";
+$sendpayoptionid = "FALSE";
+$gw_orderid = "orderid";
+$gw_amount = "amount";
+$gw_merchantid = "tec_vendor";
+$gw_logourl = "";
+$gw_vspartner = "";
+$gw_pageid = "";
+$gw_description = "description";
+$gw_returnurl1 = "notifyurl";
+$gw_returnurl2 = "returnurl";
+$gw_cancel = "";
+$gw_basket = "products";
+$gw_affiliate = "affiliate";
+$gw_bgcolor = "";
+$gw_bgurl = "";
+$gw_extrafields = "";
+$testrequest = "";
+
+$gw_parameters['merchantid'] = "true";
+$gw_parameters['secret'] = "true";
+$gw_parameters['transactionkey'] = "false";
+$gw_parameters['logourl'] = "";
+$gw_parameters['vspartner'] = "false";
+$gw_parameters['pageid'] = "false";
+$gw_parameters['testmode'] = "true";
+$gw_parameters['autodelivery'] = "true";
+$gw_parameters['deliverpending'] = "false";
+$gw_parameters['gwbgcolor'] = "";
+$gw_parameters['gwbgurl'] = "";
+$gw_parameters['paymentinfo'] = "false";
+$gw_parameters['telesign'] = "false";
+
+$testrequest = "<input type=\"hidden\" name=\"testmode\" value=\"true\">\n";
+
+if ( ! function_exists('authenticate') ) {
+	function authenticate($gateway_input, $securityhash, $merchant) {
+		$checkhash = md5($securityhash.$gateway_input["invoicenum"]."hjer83bs");
+		if ($gateway_input['tec_status'] == "Y" && $gateway_input['vendor'] == $merchant && $gateway_input['tec_hash'] == $checkhash) $validate[0] = "VERIFIED";
+		else $validate[0] = "INVALID";
+		$validate[1] = "Transaction denied!";
+		return $validate;
+	}
+}
+
+if ( ! function_exists('process_payment') ) {
+	function process_payment($user, $password, $vspartner, $cardtype, $ccnumber, $seccode, $expdate, $amount, $invoice, $firstname, $lastname, $address, $city, $zip, $state, $country, $phone, $email, $testmode, $description) {
+	}
+}
+
+if ( ! function_exists('parse_response') ) {
+	function parse_response($gateway_input) {
+		$response['invoicenum']=$gateway_input['invoicenum'];
+		$response['email']=$gateway_input['email'];
+		$response['firstname']=$gateway_input['name'];
+		$response['lastname']="Unknown";
+		$response['address']="Unknown";
+		$response['zip']="Unknown";
+		$response['country']="Unknown";
+		$response['remoteorderid']=$gateway_input['tec_orderid'];
+		$response['phone']="Unknown";
+		$response['price']=$gateway_input['amount'];
+		$response['products']=$gateway_input['products'];
+		$response['description']=$gateway_input['description'];
+		$response['affiliate']=$gateway_input['affiliate'];
+		return $response;
+	}
+}
+?>

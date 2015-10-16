@@ -1,0 +1,36 @@
+<html><head><title>%ashopname% Order Activation</title></head><body>
+<!-- Contact %ashopemail% if you have trouble with HTML messages. -->
+<table width="600" border="1" noshade cellspacing="0" cellpadding="5" bordercolor="#CCCCCC" bgcolor="#FFFFCC" align="center">
+  <tr> 
+    <td width="180"><font face="Arial, Helvetica, sans-serif" size="2"><b>Order Date:</b> %dateshort%<br><b>Reference:</b> %invoice%</font></td>
+    <td align="center" width="420" bgcolor="#FFFFFF"><font face="Arial, Helvetica, sans-serif" size="2"><b>%ashopname%</b></font><br><font face="Verdana, Arial, Helvetica, sans-serif" color="#003366"><b>ORDER ACTIVATION</b></font></td>
+  </tr>
+  <tr> 
+    <td colspan="2"> 
+    <table width="100%" border="0" cellpadding="5"><tr><td width="60" valign="top"><b><font face="Arial, Helvetica, sans-serif" size="2">Sold To:</font></b></td><td valign="top" bgcolor="#ffffff"><font face="Arial, Helvetica, sans-serif" size="2">%customer_firstname% %customer_lastname% <br>
+          %customer_address%<br>
+          %customer_city%, %customer_state% %customer_zip%<br>
+          %customer_country%<br>
+	  %customer_email%, %customer_phone%</font></td></tr>
+    </table><br>
+    <table width="100%" border="0" cellpadding="5"><tr><td width="60" valign="top"><b><font face="Arial, Helvetica, sans-serif" size="2">Description:</font></b></td><td valign="top" bgcolor="#ffffff"><font face="Arial, Helvetica, sans-serif" size="2">%receipt_description%</font></td></tr>
+	<tr><td width="60" valign="top"><b><font face="Arial, Helvetica, sans-serif" size="2">Amount:</font></b></td><td valign="top"><font face="Arial, Helvetica, sans-serif" size="2">%amount%</font></td></tr>
+    </table>
+</td>
+  </tr>
+  <tr> 
+    <td colspan="2"><p align="center"><font face="Verdana" size="2"><b>Your payment has been received and your order is now activated.</b></font></p>
+
+<!-- Downloads -->
+    <p><font face="Arial, Helvetica, sans-serif" size="2"><b>Product File Download:</b></font><table width="100%" border="0" cellpadding="5"><tr><td bgcolor="#ffffff"><p><font face="Arial, Helvetica, sans-serif" size="2"><a href="%ashopurl%/deliver.html">%ashopurl%/deliver.html</a><br><b>Login eMail:</b> %customer_email%<br><b>Password:</b> %password%</font></p><p><font face="Arial, Helvetica, sans-serif" size="2">If you experience any difficulty with this download or lose your connection before the download is complete, use the link and password from your e-mail receipt for a fresh download. Your password will be valid for %downloadtimes% downloads within %downloaddays% day(s).</font></p></td></tr></table></p>
+<!-- /Downloads -->
+
+<!-- Unlockkeys -->
+    <p><font face="Arial, Helvetica, sans-serif" size="2"><b>Software Registration Key(s):</b></font><br><table width="100%" cellpadding="5"><tr><td bgcolor="#ffffff" align="center"><font face="Arial, Helvetica, sans-serif" size="2">%unlockkeys%</font></td></tr></table></p>
+<!-- /Unlockkeys -->
+
+<!-- Subscriptions -->
+    <p><font face="Arial, Helvetica, sans-serif" size="2"><b>Access To Protected Directories:</b></font><br><table width="100%" cellpadding="5"><tr><td bgcolor="#ffffff" align="center"><font face="Arial, Helvetica, sans-serif" size="2">%subscriptionlinks%</font></td></tr><tr><td bgcolor="#ffffff"><font face="Arial, Helvetica, sans-serif" size="2">You can access the protected directories you have subscribed to by logging in with your email address and the password <b>%password%</b></font></td></tr></table></p>
+<!-- /Subscriptions -->
+
+</font></td></tr></table></body></html>

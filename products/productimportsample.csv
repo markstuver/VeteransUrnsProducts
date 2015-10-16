@@ -1,0 +1,11 @@
+Category 1,Category 2,SKU,Inventory,Name,Description,Price,Wholesale Price,Weight,Shipping,Tax,Attribute Name,Downloadable Alternative 1,Downloadable Alternative 2,Alternative Price 1,Alternative Price 2,Product File 1,Product File 2,Image
+First Category,Second Category,SKU1,10,Product Name 1,Product Description 1,10.00,5.00,2,,1,Format,JPEG,Illustrator,1,2,downloadable1.jpg,seconddownloadable1.ai,productimage1.gif
+First Category,,SKU2,23,Product Name 2,Product Description 2,15.00,8.00,1,2.00,,,,,,,,,productimage2.gif
+Second Category,,SKU3,12,Product Name 3,Product Description 3,10.00,5.00,2,,1,File Type,JPEG,,4,,downloadable2.jpg,,productimage3.jpg
+First Category,,SKU4,23,Product Name 4,Product Description 4,15.00,8.00,1,2.00,,,,,,,,,
+Second Category,,SKU5,12,Product Name 5,Product Description 5,10.00,5.00,2,,1,File Type,JPEG,,4,,downloadable3.jpg,,productimage4.jpg
+Second Category,,SKU6,12,Product Name 6,Product Description 6,10.00,5.00,2,,1,File Type,JPEG,,4,,downloadable4.jpg,,productimage5.gif
+Second Category,,SKU7,12,Product Name 7,Product Description 7,10.00,5.00,2,,1,File Type,JPEG,,4,,downloadable5.jpg,,productimage6.gif
+Second Category,,SKU8,12,Product Name 8,Product Description 8,10.00,5.00,2,,1,File Type,JPEG,,4,,downloadable6.jpg,,productimage7.gif
+First Category,Second Category,SKU10,70,Product Name 9,Product Description 9,10.00,5.00,2,,1,Format,JPEG,Illustrator,1,2,downloadable7.jpg,seconddownloadable2.ai,productimage8.gif
+Second Category,,SKU10,12,Product Name 10,Product Description 10,10.00,5.00,2,,1,File Type,JPEG,,4,,downloadable8.jpg,,productimage9.gif

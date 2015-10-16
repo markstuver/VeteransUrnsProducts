@@ -1,0 +1,101 @@
+<?php
+// NexCommerce...
+$gatewayname = "NexCommerce";
+$paymenturl = "https://secure.paymentclearing.com/cgi-bin/mas/buynow.cgi";
+$postbackurl = "$ashopurl/order.php";
+$visibleorderprocessing = "TRUE";
+$resultpagessl = "TRUE";
+$sendpayoptionid = "FALSE";
+$gw_orderid = "invoicenum";
+$gw_amount = "1_cost";
+$gw_merchantid = "vendor_id";
+$gw_logourl = "";
+$gw_vspartner = "";
+$gw_pageid = "";
+$gw_description = "1_desc";
+$gw_returnurl1 = "ret_addr";
+$gw_returnurl2 = "";
+$gw_cancel = "";
+$gw_basket = "productid";
+$gw_affiliate = "affiliate";
+$gw_bgcolor = "bgcolor";
+$gw_bgurl = "background";
+$gw_extrafields = "<input type=\"hidden\" name=\"home_page\" value=\"$ashopurl\">\n
+			  <input type=\"hidden\" name=\"showaddr\" value=\"1\">
+			  <input type=\"hidden\" name=\"showcvv\" value=\"0\">
+			  <input type=\"hidden\" name=\"acceptchecks\" value=\"1\">
+			  <input type=\"hidden\" name=\"accepteft\" value=\"0\">
+			  <input type=\"hidden\" name=\"altaddr\" value=\"0\">
+			  <input type=\"hidden\" name=\"nonum\" value=\"1\">
+			  <input type=\"hidden\" name=\"bodytags\" value=\"1\">\n
+		      <input type=\"hidden\" name=\"1_qty\" value=\"1\">\n
+		      <input type=\"hidden\" name=\"mername\" value=\"$ashopname\">\n
+		      <input type=\"hidden\" name=\"acceptcards\" value=\"1\">\n
+			  <input type=\"hidden\" name=\"ret_mode\" value=\"post\">\n
+			  <input type=\"hidden\" name=\"passback\" value=\"invoicenum\">\n
+			  <input type=\"hidden\" name=\"passback\" value=\"productid\">\n
+			  <input type=\"hidden\" name=\"lookup\" value=\"first_name\">\n
+			  <input type=\"hidden\" name=\"lookup\" value=\"last_name\">\n
+			  <input type=\"hidden\" name=\"lookup\" value=\"address\">\n
+			  <input type=\"hidden\" name=\"lookup\" value=\"city\">\n
+			  <input type=\"hidden\" name=\"lookup\" value=\"state\">\n
+			  <input type=\"hidden\" name=\"lookup\" value=\"zip\">\n
+			  <input type=\"hidden\" name=\"lookup\" value=\"country\">\n
+			  <input type=\"hidden\" name=\"lookup\" value=\"phone\">\n
+			  <input type=\"hidden\" name=\"lookup\" value=\"email\">\n
+			  <input type=\"hidden\" name=\"lookup\" value=\"total\">\n
+			  <input type=\"hidden\" name=\"lookup\" value=\"authcode\">\n
+			  <input type=\"hidden\" name=\"passback\" value=\"1_desc\">\n
+			  <input type=\"hidden\" name=\"lookup\" value=\"xid\">\n";
+if ($affiliate) $gw_extrafields .= "<input type=\"hidden\" name=\"passback\" value=\"affiliate\">\n";
+
+$testrequest = "";
+
+$gw_parameters['merchantid'] = "true";
+$gw_parameters['secret'] = "false";
+$gw_parameters['transactionkey'] = "false";
+$gw_parameters['logourl'] = "true";
+$gw_parameters['vspartner'] = "false";
+$gw_parameters['pageid'] = "false";
+$gw_parameters['testmode'] = "false";
+$gw_parameters['autodelivery'] = "false";
+$gw_parameters['deliverpending'] = "false";
+$gw_parameters['gwbgcolor'] = "true";
+$gw_parameters['gwbgurl'] = "true";
+$gw_parameters['paymentinfo'] = "false";
+$gw_parameters['telesign'] = "false";
+
+if ( ! function_exists('authenticate') ) {
+	function authenticate($gateway_input, $securityhash, $merchant) {
+		if (!$gateway_input['xid'] || !$gateway_input['authcode']) $validate[0] = "INVALID";
+		else $validate[0] = "VERIFIED";
+		return $validate;
+	}
+}
+
+if ( ! function_exists('process_payment') ) {
+	function process_payment($user, $password, $vspartner, $cardtype, $ccnumber, $seccode, $expdate, $amount, $invoice, $firstname, $lastname, $address, $city, $zip, $state, $country, $phone, $email, $testmode, $description) {
+	}
+}
+
+if ( ! function_exists('parse_response') ) {
+	function parse_response($gateway_input) {
+		$response['invoicenum']=$gateway_input['invoicenum'];
+		$response['email']=$gateway_input['email'];
+		$response['firstname']=$gateway_input['first_name'];
+		$response['lastname']=$gateway_input['last_name'];
+		$response['address']=$gateway_input['address'];
+		$response['zip']=$gateway_input['zip'];
+		$response['city']=$gateway_input['city'];
+		$response['state']=$gateway_input['state'];
+		$response['country']=$gateway_input['country'];
+		$response['remoteorderid']=$gateway_input['xid'];
+		$response['phone']=$gateway_input['phone'];
+		$response['price']=$gateway_input['total'];
+		$response['products']=$gateway_input['productid'];
+		$response['description']=$gateway_input['1_desc'];
+		$response['affiliate']=$gateway_input['affiliate'];
+		return $response;
+	}
+}
+?>

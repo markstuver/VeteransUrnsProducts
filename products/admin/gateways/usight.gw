@@ -1,0 +1,74 @@
+<?php
+// uSight...
+$gatewayname = "uSight";
+$paymenturl = "https://gateway.usight.com/secureforms.secure";
+$postbackurl = "$ashopurl/order.php";
+$visibleorderprocessing = "FALSE";
+$resultpagessl = "FALSE";
+$sendpayoptionid = "FALSE";
+$gw_orderid = "GWInvoiceNo";
+$gw_amount = "GWOrderTotal";
+$gw_merchantid = "GWUserName";
+$gw_logourl = "";
+$gw_vspartner = "";
+$gw_pageid = "";
+$gw_description = "GWOrderDescription";
+$gw_returnurl1 = "GWSilentPostURL";
+$gw_returnurl2 = "GWReturnURL";
+$gw_cancel = "";
+$gw_basket = "productid";
+$gw_affiliate = "affiliate";
+$gw_bgcolor = "";
+$gw_bgurl = "";
+$gw_extrafields = "<input type=\"hidden\" name=\"GWCollectShipping\" value=\"false\">";
+$testrequest = "";
+
+$gw_parameters['merchantid'] = "true";
+$gw_parameters['secret'] = "false";
+$gw_parameters['transactionkey'] = "false";
+$gw_parameters['logourl'] = "false";
+$gw_parameters['vspartner'] = "false";
+$gw_parameters['pageid'] = "false";
+$gw_parameters['testmode'] = "false";
+$gw_parameters['autodelivery'] = "false";
+$gw_parameters['deliverpending'] = "false";
+$gw_parameters['gwbgcolor'] = "false";
+$gw_parameters['gwbgurl'] = "false";
+$gw_parameters['paymentinfo'] = "false";
+$gw_parameters['telesign'] = "false";
+
+if ( ! function_exists('authenticate') ) {
+	function authenticate($gateway_input, $securityhash, $merchant) {
+		if ($gateway_input['ResponseCode'] != 0) $validate[0] = "INVALID";
+		else $validate[0] = "VERIFIED";
+		if ($gateway_input['ResponseMessage']) $validate[1] = $gateway_input['ResponseMessage'];
+		return $validate;
+	}
+}
+
+if ( ! function_exists('process_payment') ) {
+	function process_payment($user, $password, $vspartner, $cardtype, $ccnumber, $seccode, $expdate, $amount, $invoice, $firstname, $lastname, $address, $city, $zip, $state, $country, $phone, $email, $testmode, $description) {
+	}
+}
+
+if ( ! function_exists('parse_response') ) {
+	function parse_response($gateway_input) {
+		$response['invoicenum']=$gateway_input['GWInvoiceNo'];
+		$response['email']=$gateway_input['Email'];
+		$response['firstname']=$gateway_input['FirstName'];
+		$response['lastname']=$gateway_input['LastName'];
+		$response['address']=$gateway_input['Address']." ".$gateway_input['Address2'];
+		$response['zip']=$gateway_input['Zip'];
+		$response['city']=$gateway_input['City'];
+		$response['state']=$gateway_input['State'];
+		$response['country']=$gateway_input['Country'];
+		$response['remoteorderid']=$gateway_input['GWInvoiceNo'];
+		$response['phone']=$gateway_input['Phone'];
+		$response['price']=$gateway_input['GWOrderTotal'];
+		$response['products']=$gateway_input['productid'];
+		$response['description']=$gateway_input['GWOrderDescription'];
+		$response['affiliate']=$gateway_input['affiliate'];
+		return $response;
+	}
+}
+?>

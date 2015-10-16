@@ -1,0 +1,134 @@
+<?php
+// OKPay...
+$gatewayname = "OKPay";
+$paymenturl = "https://www.okpay.com/process.html";
+$postbackurl = "$ashopurl/order.php";
+$visibleorderprocessing = "FALSE";
+$resultpagessl = "FALSE";
+$sendpayoptionid = "TRUE";
+$gw_orderid = "ok_invoice";
+$gw_amount = "ok_item_1_price";
+$gw_merchantid = "ok_receiver";
+$gw_logourl = "";
+$gw_vspartner = "";
+$gw_pageid = "";
+$gw_description = "ok_item_1_name";
+$gw_returnurl1 = "ok_ipn";
+$gw_returnurl2 = "ok_return_success";
+$gw_cancel = "ok_return_fail";
+$gw_basket = "ok_item_1_article";
+$gw_affiliate = "";
+$gw_bgcolor = "";
+$gw_bgurl = "";
+$gw_firstname = "ok_payer_first_name";
+$gw_lastname = "ok_payer_last_name";
+$gw_address = "ok_payer_street";
+$gw_city = "ok_payer_city";
+$gw_zip = "ok_payer_zip";
+$gw_state = "ok_payer_state";
+$gw_country = "ok_payer_country";
+$gw_email = "ok_payer_email";
+$gw_phone = "ok_payer_phone";
+$gw_shipfirstname = "";
+$gw_shiplastname = "";
+$gw_shipaddress = "";
+$gw_shipcity = "";
+$gw_shipzip = "";
+$gw_shipstate = "";
+$gw_shipcountry = "";
+
+$gw_extrafields  = "<input type=\"hidden\" name=\"ok_currency\" value=\"NOK\">";
+
+if (!empty($recurringtotal) && is_numeric($recurringtotal) && $recurringtotal > 0) {
+	$gw_extrafields .= "<input type=\"hidden\" name=\"ok_item_1_type\" value=\"service\">
+	";
+} else {
+	$gw_extrafields .= "<input type=\"hidden\" name=\"ok_item_1_type\" value=\"shipment\">
+	";
+}
+
+$testrequest = "";
+
+$gw_parameters['merchantid'] = "true";
+$gw_parameters['secret'] = "false";
+$gw_parameters['transactionkey'] = "false";
+$gw_parameters['logourl'] = "false";
+$gw_parameters['vspartner'] = "false";
+$gw_parameters['pageid'] = "false";
+$gw_parameters['testmode'] = "false";
+$gw_parameters['autodelivery'] = "false";
+$gw_parameters['deliverpending'] = "false";
+$gw_parameters['gwbgcolor'] = "false";
+$gw_parameters['gwbgurl'] = "false";
+$gw_parameters['paymentinfo'] = "false";
+$gw_parameters['telesign'] = "false";
+
+if ( ! function_exists('authenticate') ) {
+	function authenticate($gateway_input, $securityhash, $merchant) {
+		global $ashoppath;
+		if ($gateway_input['ok_txn_status'] != "reversed") {
+			foreach ($gateway_input as $key => $value) {
+				$okpaycheck .= $key . '=' . str_replace("%5C%27", "'", urlencode($value)) . '&';
+			}
+			$okpaycheck .= "ok_verify=true";
+			$okpaycheck = str_replace("%5C%22", "\"", $okpaycheck);
+			// Checking transaction
+			$header = "POST /ipn-verify.html HTTP/1.0\r\nHost: www.okpay.com\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: " . strlen($okpaycheck) . "\r\n\r\n"; 
+			$fp = fsockopen ('www.okpay.com', 80, $errno, $errstr, 30); 
+			fputs ($fp, $header . $okpaycheck);
+			while (!feof($fp)) { 
+				$res = fgets ($fp, 1024);
+				if (strcmp ($res, "VERIFIED") == 0) {
+					$validate[0] = "VERIFIED";
+				}
+				else if (strcmp ($res, "INVALID") == 0) {
+					$validate[0] = "INVALID";
+					$validate[1] = "SUSPECT";
+				}
+			}
+			fclose ($fp);
+			if ($gateway_input['ok_receiver'] != $merchant) {
+				$validate[0] = "INVALID";
+				$validate[1] = "MERCHANTID";
+			}
+			if ($gateway_input['ok_txn_status'] != "completed") {
+				$validate[0] = "INVALID";
+			}
+			if ($validate[0] != "VERIFIED") {
+				$validate[0] = "INVALID";
+			}
+			return $validate;
+		} else {
+			$validate[0] = "INVALID";
+			$validate[1] = "REVERSAL";
+			return $validate;
+		}
+	}
+}
+
+if ( ! function_exists('process_payment') ) {
+	function process_payment($user, $password, $vspartner, $cardtype, $ccnumber, $seccode, $expdate, $amount, $invoice, $firstname, $lastname, $address, $city, $zip, $state, $country, $phone, $email, $testmode, $description) {
+	}
+}
+
+if ( ! function_exists('parse_response') ) {
+	function parse_response($gateway_input) {
+		$response['invoicenum']=$gateway_input['ok_txn_id'];
+		$response['email']=$gateway_input['ok_payer_email'];
+		$response['firstname']=$gateway_input['ok_payer_first_name'];
+		$response['lastname']=$gateway_input['ok_payer_last_name'];
+		$response['address']=$gateway_input['ok_payer_street'];
+		$response['zip']=$gateway_input['ok_payer_zip'];
+		$response['city']=$gateway_input['ok_payer_city'];
+		$response['state']=$gateway_input['ok_payer_state'];
+		$response['country']=$gateway_input['ok_payer_country'];
+		$response['remoteorderid']=$gateway_input['remoteorderid'];
+		$response['phone']=$gateway_input['ok_payer_phone'];
+		$response['price']=$gateway_input['ok_txn_gross'];
+		$response['products']=$gateway_input['ok_item_1_article'];
+		$response['description']=$gateway_input['ok_item_1_name'];
+		$response['affiliate']="";
+		return $response;
+	}
+}
+?>

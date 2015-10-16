@@ -1,0 +1,119 @@
+<?php
+// Payza...
+$gatewayname = "Payza";
+$paymenturl = "https://secure.payza.com/checkout";
+$postbackurl = "$ashopurl/order.php";
+$visibleorderprocessing = "FALSE";
+$resultpagessl = "FALSE";
+$sendpayoptionid = "FALSE";
+$gw_orderid = "ap_itemcode";
+$gw_amount = "ap_amount";
+$gw_merchantid = "ap_merchant";
+$gw_logourl = "";
+$gw_vspartner = "";
+$gw_pageid = "";
+$gw_description = "ap_itemname";
+$gw_returnurl1 = "ap_alerturl";
+$gw_returnurl2 = "ap_returnurl";
+$gw_cancel = "ap_cancelurl";
+$gw_basket = "apc_2";
+$gw_affiliate = "apc_1";
+$gw_bgcolor = "";
+$gw_bgurl = "";
+$gw_firstname = "";
+$gw_lastname = "";
+$gw_address = "";
+$gw_city = "";
+$gw_zip = "";
+$gw_state = "";
+$gw_country = "";
+$gw_email = "";
+$gw_phone = "";
+$gw_shipfirstname = "";
+$gw_shiplastname = "";
+$gw_shipaddress = "";
+$gw_shipcity = "";
+$gw_shipzip = "";
+$gw_shipstate = "";
+$gw_shipcountry = "";
+
+$gw_extrafields = "<input type=\"hidden\" name=\"ap_currency\" value=\"EUR\">";
+if (!empty($recurringtotal) && is_numeric($recurringtotal) && $recurringtotal > 0) {
+	$recurringtotal = number_format($recurringtotal,2,'.','');
+	if ($initialperiodunits == "D") $alertpayinitialperiodunits = "Day";
+	else if ($initialperiodunits == "W") $alertpayinitialperiodunits = "Week";
+	else if ($initialperiodunits == "M") $alertpayinitialperiodunits = "Month";
+	else if ($initialperiodunits == "Y") $alertpayinitialperiodunits = "Year";
+	if ($recurringperiodunits == "D") $alertpayrecurringperiodunits = "Day";
+	else if ($recurringperiodunits == "W") $alertpayrecurringperiodunits = "Week";
+	else if ($recurringperiodunits == "M") $alertpayrecurringperiodunits = "Month";
+	else if ($recurringperiodunits == "Y") $alertpayrecurringperiodunits = "Year";
+	$gw_extrafields .= "
+	<input type=\"hidden\" name=\"ap_purchasetype\" value=\"subscription\">
+	<input type=\"hidden\" name=\"ap_trialperiodlength\" value=\"$initialperiod\">
+	<input type=\"hidden\" name=\"ap_trialtimeunit\" value=\"$alertpayinitialperiodunits\">
+	<input type=\"hidden\" name=\"ap_setupamount\" value=\"$alertpaystartfee\">
+	<input type=\"hidden\" name=\"ap_periodlength\" value=\"$recurringperiod\">
+	<input type=\"hidden\" name=\"ap_timeunit\" value=\"$alertpayrecurringperiodunits\">
+	<input type=\"hidden\" name=\"ap_periodcount\" value=\"$rebills\">
+	";
+} else $gw_extrafields .= "<input type=\"hidden\" name=\"ap_purchasetype\" value=\"item\">";
+$testrequest = "";
+
+$gw_parameters['merchantid'] = "true";
+$gw_parameters['secret'] = "true";
+$gw_parameters['transactionkey'] = "true";
+$gw_parameters['logourl'] = "false";
+$gw_parameters['vspartner'] = "false";
+$gw_parameters['pageid'] = "false";
+$gw_parameters['testmode'] = "false";
+$gw_parameters['autodelivery'] = "false";
+$gw_parameters['deliverpending'] = "false";
+$gw_parameters['gwbgcolor'] = "false";
+$gw_parameters['gwbgurl'] = "false";
+$gw_parameters['paymentinfo'] = "false";
+$gw_parameters['telesign'] = "false";
+$gw_parameters['initialperiod'] = "true";
+$gw_parameters['recurringperiod'] = "true";
+$gw_parameters['rebills'] = "true";
+
+if ( ! function_exists('authenticate') ) {
+	function authenticate($gateway_input, $securityhash, $merchant) {
+		if($gateway_input["ap_securitycode"] == $securityhash && $gateway_input["ap_merchant"] == $merchant) {
+			if ($gateway_input["ap_status"] == "Success") $validate[0] = "VERIFIED";
+			else if ($gateway_input["ap_status"] == "Subscription-Payment-Success") {
+				if ($gateway_input["ap_subscriptionpaymentnumber"] == "1") exit;
+				else $validate[0] = "SUBSCRIPTION";
+			} else $validate[0] = "INVALID";
+		} else $validate[0] = "INVALID";
+		return $validate;
+	}
+}
+
+if ( ! function_exists('process_payment') ) {
+	function process_payment($user, $password, $vspartner, $cardtype, $ccnumber, $seccode, $expdate, $amount, $invoice, $firstname, $lastname, $address, $city, $zip, $state, $country, $phone, $email, $testmode, $description) {
+	}
+}
+
+if ( ! function_exists('parse_response') ) {
+	function parse_response($gateway_input) {
+		$response['invoicenum']=$gateway_input['ap_itemcode'];
+		$response['email']=$gateway_input['ap_custemailaddress'];
+		$response['firstname']=$gateway_input['ap_custfirstname'];
+		$response['lastname']=$gateway_input['ap_custlastname'];
+		$response['address']=$gateway_input['ap_custaddress'];
+		$response['zip']=$gateway_input['ap_custzip'];
+		$response['city']=$gateway_input['ap_custcity'];
+		$response['state']=$gateway_input['ap_custstate'];
+		$response['country']=$gateway_input['ap_custcountry'];
+		if (!empty($gateway_input['ap_subscriptionreferencenumber'])) $response['remoteorderid']=$gateway_input['ap_subscriptionreferencenumber'];
+		else $response['remoteorderid']=$gateway_input['ap_referencenumber'];
+		$response['phone']="";
+		$response['price']=$gateway_input['ap_totalamount'];
+		$response['products']=$gateway_input['apc_2'];
+		$response['description']=$gateway_input['ap_itemname'];
+		$response['affiliate']=$gateway_input['apc_1'];
+		return $response;
+	}
+}
+?>

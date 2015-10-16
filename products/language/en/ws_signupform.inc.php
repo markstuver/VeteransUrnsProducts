@@ -1,0 +1,36 @@
+<?php
+define('CHARSET', '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />');
+define('SIGNUP', 'Apply for a wholesale account at');
+define('ALREADYSIGNEDUP', 'Already signed up?');
+define('LOGINHERE', 'Login Here');
+define('WHOLESALEMESSAGE', 'Your application will be reviewed by a live person before your wholesale membership is activated. Once approved, a password and link to the wholesale catalogue will be emailed to you.');
+define('USERNAME', 'User name');
+define('MAXCHARS', '[max 10 characters]');
+define('BUSINESS', 'Business name');
+define('BUSINESSTYPE', 'Business type');
+define('SELECTONE', 'Select one');
+define('SOLEPROPRIETOR', 'Sole proprietor');
+define('CORPORATION', 'Corporation');
+define('NONPROFIT', 'Non-profit');
+define('FIRSTNAME', 'First name');
+define('LASTNAME', 'Last name');
+define('EMAIL', 'Email');
+define('ADDRESS', 'Address');
+define('CITY', 'City');
+define('STATE', 'State/Province');
+define('PROVINCE', 'Region');
+define('ZIP', 'Zip');
+define('COUNTRY', 'Country');
+define('CHOOSECOUNTRY', 'choose country');
+define('PHONE', 'Phone');
+define('URL', 'Website URL');
+define('VATNUMBER', 'VAT number');
+define('ABNNUMBER', 'ABN number');
+define('OPTIONAL', '[optional]');
+define('PLEASEPROVIDE', 'Please provide a brief description of your business. All information submitted in this form is held strictly confidential.');
+define('DESCRIPTION', 'Description');
+define('SECURITYCODE', 'Security code');
+define('TYPESECURITYCODE', 'Type security code');
+define('SUBMIT', 'Submit');
+define('RESET', 'Reset');
+?>

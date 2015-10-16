@@ -1,0 +1,109 @@
+<?php
+// First Data Global Gateway Connect 2.0...
+$gatewayname = "First Data Connect 2";
+$paymenturl = "https://connect.firstdataglobalgateway.com/IPGConnect/gateway/processing";
+$postbackurl = "$ashopurl/order.php";
+$visibleorderprocessing = "TRUE";
+$resultpagessl = "FALSE";
+$sendpayoptionid = "FALSE";
+$noquerystring = "FALSE";
+$gw_orderid = "oid";
+$gw_amount = "chargetotal";
+$gw_merchantid = "storename";
+$gw_logourl = "";
+$gw_vspartner = "";
+$gw_pageid = "";
+$gw_description = "description";
+$gw_returnurl1 = "responseSuccessURL";
+$gw_returnurl2 = "";
+$gw_cancel = "";
+$gw_basket = "products";
+$gw_affiliate = "affiliate";
+$gw_bgcolor = "";
+$gw_bgurl = "";
+
+if ( ! function_exists('createHash') ) {
+	function createHash($merchantid, $secret, $fdg_dateTime, $fdg_chargetotal, $approvalcode="") {
+		if (!empty($approvalcode)) $str = $secret . $approvalcode . $fdg_chargetotal . "840" . $fdg_dateTime . $merchantid;
+		else $str = $merchantid . $fdg_dateTime . $fdg_chargetotal . $secret;
+		for ($i = 0; $i < strlen($str); $i++) $hex_str.=dechex(ord($str[$i]));
+		return hash('sha256', $hex_str);
+	}
+}
+
+$fdg_timezone = date('T');
+$fdg_hashts = time();
+$fdg_dateTime = date("Y:m:d-H:i:s",$fdg_hashts);
+$fdg_chargetotal = number_format($subtotal+$payoptionfee,2,'.','');
+if (!empty($merchantid) && !empty($secret) && !empty($fdg_chargetotal)) $fdg_hash = createHash($merchantid, $secret, $fdg_dateTime, $fdg_chargetotal);
+else $fdg_hash = "";
+$fdg_subtotal = $subtotal+$payoptionfee-$totalshipping-$totalsalestax;
+
+$gw_extrafields = "<input type=\"hidden\" name=\"mode\" value=\"fullpay\">
+<input type=\"hidden\" name=\"txntype\" value=\"sale\">
+<input type=\"hidden\" name=\"timezone\" value=\"$fdg_timezone\">
+<input type=\"hidden\" name=\"txndatetime\" value=\"$fdg_dateTime\">
+<input type=\"hidden\" name=\"hashts\" value=\"$fdg_hashts\">
+<input type=\"hidden\" name=\"hash\" value=\"$fdg_hash\">
+<input type=\"hidden\" name=\"subtotal\" value=\"$fdg_subtotal\">
+<input type=\"hidden\" name=\"tax\" value=\"$totalsalestax\">
+<input type=\"hidden\" name=\"shipping\" value=\"$totalshipping\">
+<input type=\"hidden\" name=\"trxOrigin\" value=\"ECI\">";
+
+$gw_parameters['merchantid'] = "true";
+$gw_parameters['secret'] = "true";
+$gw_parameters['transactionkey'] = "false";
+$gw_parameters['logourl'] = "false";
+$gw_parameters['vspartner'] = "false";
+$gw_parameters['pageid'] = "false";
+$gw_parameters['testmode'] = "false";
+$gw_parameters['autodelivery'] = "true";
+$gw_parameters['deliverpending'] = "false";
+$gw_parameters['gwbgcolor'] = "false";
+$gw_parameters['gwbgurl'] = "false";
+$gw_parameters['paymentinfo'] = "false";
+$gw_parameters['telesign'] = "false";
+
+if ( ! function_exists('authenticate') ) {
+	function authenticate($gateway_input, $securityhash, $merchant) {
+		global $ashoppath;
+		if (!empty($gateway_input['hashts'])) $checkdatetime = date("Y:m:d-H:i:s",$gateway_input['hashts']);
+		else $checkdatetime = "";
+		$checkhash = createHash($merchant, $securityhash, $checkdatetime, $gateway_input['chargetotal'], $gateway_input['approval_code']);
+		if (strtolower($gateway_input['status']) != "approved" || !$gateway_input['oid'] || !$gateway_input['approval_code'] || !$gateway_input['txndate_processed'] || $gateway_input['response_hash'] != $checkhash) {
+			$validate[0] = "INVALID";
+			if ($gateway_input['fail_reason']) $validate[1] = $gateway_input['fail_reason'];
+		} else $validate[0] = "VERIFIED";
+		return $validate;
+	}
+}
+
+if ( ! function_exists('process_payment') ) {
+	function process_payment($user, $password, $vspartner, $cardtype, $ccnumber, $seccode, $expdate, $amount, $invoice, $firstname, $lastname, $address, $city, $zip, $state, $country, $phone, $email, $testmode, $description) {
+	}
+}
+
+if ( ! function_exists('parse_response') ) {
+	function parse_response($gateway_input) {
+		$response['invoicenum']=$gateway_input['oid'];
+		$response['email']=$gateway_input['email'];
+		$fullname = $gateway_input['bname'];
+		$fullname = explode(" ", $fullname);
+		$response['firstname']=$fullname[0];
+		$response['lastname']=$fullname[count($fullname)-1];
+		$response['address']=$gateway_input['baddr1'];
+		$response['zip']=$gateway_input['bzip'];
+		$response['city']=$gateway_input['bcity'];
+		$response['state']=$gateway_input['bstate'];
+		if(!$gateway_input['bstate']) $response['state']=$gateway_input['bstate2'];
+		$response['country']=$gateway_input['bcountry'];
+		$response['remoteorderid']=$gateway_input['oid'];
+		$response['phone']=$gateway_input['phone'];
+		$response['price']=$gateway_input['chargetotal'];
+		$response['products']=$gateway_input['products'];
+		$response['description']=$gateway_input['description'];
+		$response['affiliate']=$gateway_input['affiliate'];
+		return $response;
+	}
+}
+?>

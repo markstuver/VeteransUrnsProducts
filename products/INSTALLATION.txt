@@ -1,0 +1,67 @@
+Software Requirements:
+
+- At least version 5.0.0 of PHP.
+- PHP Safe Mode = Off
+- PHP File Uploads = On (to use the file upload features)
+- A MySQL database
+- Curl With SSL Available (needed by some payment gateways)
+- The PHP fsockopen-function is working
+
+
+Pre-installation Test  Script - ashoptest.php
+
+Before installing the program files, test the site to make sure that all of the server 
+requirements are met. Download the pre-installation test script. Instructions are included with
+it in a text file. Run the ashoptest.php script from a browser. If all of the tests pass, go 
+ahead with the installation.
+
+
+Installation of Software
+
+1. Unzip the AShop program files on your local computer.
+ 
+2. Use an FTP client, for example the free Filezilla, to upload the AShop files and folders to
+your website. AShop may be installed in the public root directory to make the AShop storefront
+your home page or in a subdirectory if you want to link to it from existing web pages. The AShop 
+directory structure must remain the same as in the distibution package.
+ 
+3. If necessary, change permissions of the following directories and files to 777. On some hosts
+PHP is run under your own user account and already has full permissions to the files and folders
+by default. Check with your hosting provider if you are unsure.
+
+- admin/receipts (if you want to save original customer receipts)
+- banners
+- catalog
+- images
+- images/logo.gif
+- previews
+- prodimg
+- products
+- updates
+ 
+4. Create a MySQL database for AShop and add a user with a password to the database. This can
+usually be done through your hosting provider's control panel. The user must have full privileges
+on the database.
+ 
+5. Open config.inc.php in a text editor such as NotePad and edit the following variables:
+
+- $databaseserver = "hostname for the MySQL server"
+
+The database is usually located at "localhost", unless your hosting provider has a separate shared
+MySQL server. Check with them if you are unsure.
+
+- $databasename = "name of the MySQL database"
+- $databaseuser = "user name that you added to the database that you created"
+- $databasepasswd = "password for the user name that you added to the database"
+
+6. Run install.php from a browser. This will create the database tables. To do this, enter something
+like this into your browser address bar: http://www.yourdomain.com/install.php
+
+7. Follow the instructions on screen to complete the installation.
+
+You will now see the AShop administration panel login. The default password for the administrator 
+is "ashopadmin". Login and setup the Configuration, then Edit Catalog to add categories and products.
+For security we recommend that you change the administrator password on the page 
+Configuration->Shop Parameters.
+
+Check the online help for more instructions.

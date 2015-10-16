@@ -1,0 +1,32 @@
+<?php
+define('CHARSET', '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />');
+define('MANAGEPARTIES', 'Manage Parties');
+define('HOSTAPARTY', 'Host a Party');
+define('HOSTAPARTYMESSAGE', 'Fill out the form below with the details of your party plan and we will get back to you with confirmation...');
+define('WHEN', 'When');
+define('WHERE', 'Where');
+define('COMMENTS', 'Comments');
+define('RESULT', 'Result');
+define('AWAITINGAPPROVAL', 'Awaiting Approval');
+define('PENDING', 'Pending');
+define('TOTAL', 'Total');
+define('VIEWPROFILE', 'View/Edit Profile');
+define('INVITE', 'Invite Your Friends');
+define('BACKTOPARTIES', 'Back to Parties List');
+define('INVITATIONTOPARTYON', 'Invitation to party on ');
+define('AT', 'at ');
+define('SENDTO', 'Email to');
+define('SUBMIT', 'Submit');
+define('INVITATIONSENT', 'Invitation has been sent!');
+define('INVITATIONALREADYSENT', 'Invitation has already been sent!');
+define('INVITATIONDATE', 'Date');
+define('EMAIL', 'Email');
+define('RESPONSE', 'Response');
+define('SENTINVITATIONS', 'Sent Invitations:');
+define('ACCEPTED', 'Accepted');
+define('DECLINED', 'Declined');
+define('THANKYOU', 'Thank you!');
+define('WELCOMETOTHEPARTY', 'You are welcome to');
+define('THEWORDON', 'on');
+define('THANKYOUFORLETTINGUSKNOW', 'We are sorry you will not be attending the party, but thank you for letting us know.');
+?>

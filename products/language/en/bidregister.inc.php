@@ -1,0 +1,31 @@
+<?php
+define('CHARSET', '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />');
+define('INCORRECT', 'You entered an incorrect bid code');
+define('TRYAGAIN', 'Please try again...');
+define('REGISTERBIDDER', 'Register here to start bidding on our auctions:');
+define('ENTERBIDCODE', 'Please enter your bid code');
+define('ENTERSCREENNAME', 'Show your name as');
+define('WELCOME', 'Welcome');
+define('CANPLACE', 'You can now place');
+define('BIDS', ' bids.');
+define('REDIRECTED', 'You will now be automatically redirected to ');
+define('IFNOREDIRECT', 'If the page does not redirect within 10 seconds, please click ');
+define('HERE', 'here');
+define('NOTLOGGEDIN', 'You must be logged in to be able to place a bid on one of our auctions.');
+define('LOGIN', 'Login');
+define('HERE', 'here');
+define('ORSIGNUP', 'or sign up as a customer');
+define('NOSUCHPROFILE', 'We could not find your customer account in our records.');
+define('NOSUCHAUCTION', 'There is no such auction available.');
+define('AUCTIONHASENDED', 'We are sorry but this auction has ended. Better luck next time.');
+define('TRYAGAINLINK', 'Try again!');
+define('CONFIRMBID', 'Confirm your bid on');
+define('YOURBID', 'Your bid');
+define('BELOWMINIMUM', 'Your bid is below the minimum bid!');
+define('BIDREGISTERED', 'Your bid has been registered! Thank you!');
+define('GOBACKTO', 'Back to');
+define('OUTBIDSUBJECT', 'You have been outbid!');
+define('WINNINGBIDSUBJECT', 'You have won an auction!');
+define('WONBY', 'Won by');
+define('MINIMUM', 'Minimum');
+?>

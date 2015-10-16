@@ -1,0 +1,94 @@
+<?php
+// 2CheckOut...
+$gatewayname = "2CheckOut v2";
+$paymenturl = "https://www2.2checkout.com/2co/buyer/purchase";
+$postbackurl = "$ashopurl/order.php";
+$visibleorderprocessing = "TRUE";
+$resultpagessl = "FALSE";
+$sendpayoptionid = "FALSE";
+$noquerystring = "FALSE";
+$gw_orderid = "cart_order_id";
+$gw_amount = "total";
+$gw_merchantid = "sid";
+$gw_logourl = "";
+$gw_vspartner = "";
+$gw_pageid = "";
+$gw_description = "description";
+$gw_returnurl1 = "";
+$gw_returnurl2 = "";
+$gw_cancel = "";
+$gw_basket = "products";
+$gw_affiliate = "affiliate";
+$gw_bgcolor = "";
+$gw_bgurl = "";
+$gw_firstname = "first_name";
+$gw_lastname = "last_name";
+$gw_address = "street_address";
+$gw_city = "city";
+$gw_zip = "zip";
+$gw_state = "state";
+$gw_country = "country";
+$gw_email = "email";
+$gw_phone = "phone";
+$gw_shipfirstname = "";
+$gw_shiplastname = "";
+$gw_shipaddress = "";
+$gw_shipcity = "";
+$gw_shipzip = "";
+$gw_shipstate = "";
+$gw_shipcountry = "";
+
+$gw_extrafields = "<input type=\"hidden\" name=\"id_type\" value=\"1\">";
+$testrequest = "<input type=\"hidden\" name=\"demo\" value=\"Y\">";
+
+$gw_parameters['merchantid'] = "true";
+$gw_parameters['secret'] = "true";
+$gw_parameters['transactionkey'] = "false";
+$gw_parameters['logourl'] = "false";
+$gw_parameters['vspartner'] = "false";
+$gw_parameters['pageid'] = "false";
+$gw_parameters['testmode'] = "true";
+$gw_parameters['autodelivery'] = "true";
+$gw_parameters['deliverpending'] = "false";
+$gw_parameters['gwbgcolor'] = "false";
+$gw_parameters['gwbgurl'] = "false";
+$gw_parameters['paymentinfo'] = "false";
+$gw_parameters['telesign'] = "false";
+
+if ( ! function_exists('authenticate') ) {
+	function authenticate($gateway_input, $securityhash, $merchant) {
+		$hashstring = md5($securityhash.$merchant.$gateway_input["order_number"].$gateway_input["total"]);
+		$hashstring = strtoupper($hashstring);
+		if ($gateway_input['sid'] != $merchant || $gateway_input['credit_card_processed'] != "Y" || ($gateway_input['key'] != $hashstring && $gateway_input['demo'] != "Y")) $validate[0] = "INVALID";
+		else $validate[0] = "VERIFIED";
+		return $validate;
+	}
+}
+
+if ( ! function_exists('process_payment') ) {
+	function process_payment($user, $password, $vspartner, $cardtype, $ccnumber, $seccode, $expdate, $amount, $invoice, $firstname, $lastname, $address, $city, $zip, $state, $country, $phone, $email, $testmode, $description) {
+	}
+}
+
+if ( ! function_exists('parse_response') ) {
+	function parse_response($gateway_input) {
+		$response['invoicenum']=$gateway_input['cart_order_id'];
+		$response['email']=str_replace("%40","@",$gateway_input['email']);
+		$fullname = explode(" ",$gateway_input['card_holder_name']);
+		$response['firstname']=trim($fullname[0]);
+		$response['lastname']=trim($fullname[count($fullname)-1]);
+		$response['address']=$gateway_input['street_address'];
+		$response['zip']=$gateway_input['zip'];
+		$response['city']=$gateway_input['city'];
+		$response['state']=$gateway_input['state'];
+		$response['country']=str_replace("+"," ",$gateway_input['country']);
+		$response['remoteorderid']=$gateway_input['order_number'];
+		$response['phone']=$gateway_input['phone'];
+		$response['price']=$gateway_input['total'];
+		$response['products']=$gateway_input['products'];
+		$response['description']=$gateway_input['description'];
+		$response['affiliate']=$gateway_input['affiliate'];
+		return $response;
+	}
+}
+?>

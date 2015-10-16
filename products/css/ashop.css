@@ -1,0 +1,288 @@
+@charset "utf-8";
+/* CSS Document */
+
+.ashopcategoriesbox { width: 20%; border-style: none; vertical-align: top; text-align: left; }
+
+.ashopcategoriestable { width: 100%; border: 1px solid #909090; }
+
+.ashopcategoriesheader { background-color: #909090; padding: 5px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FFFFFF; font-weight: bold; }
+
+.ashopselectedcategory { background-color: #F0F0F0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; font-weight: bold; }
+
+.ashopcategory { background-color: #E0E0E0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
+
+.ashopselectedsubsubcategory { background-color: #F0F0F0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; font-weight: bold; font-style: italic; }
+
+.ashopsubsubcategory { background-color: #E0E0E0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; font-style: italic; }
+
+.ashopboxtable { width: 100%; border: 1px solid #909090; }
+
+.ashopboxheader { background-color: #909090; padding: 5px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FFFFFF; font-weight: bold; }
+
+.ashopboxcontent { background-color: #E0E0E0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
+
+.ashopsearchfield { border: 2px solid #A0A0A0; background: #FFFFFF; width: 125px; height: 16px; font: 11px Arial, Helvetica, sans-serif; color: #000000; text-align: left; }
+
+.ashopsubtotalfield { border: 2px solid #A0A0A0; background: #FFFFFF; width: 55px; height: 16px; font: 11px Arial, Helvetica, sans-serif; color: #000000; text-align: center; }
+
+.ashoptopform { background-color: #909090; padding: 2px; border-style:none; border-collapse: collapse; width: 100%; }
+
+.ashoptopformtext { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FFFFFF; font-weight: bold; }
+
+.ashopsubtotaltext { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FFFFFF; font-weight: bold; }
+
+.ashopsubtotaltext2 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; font-weight: bold; }
+
+.ashopconfirmmessage { margin-top: 3px; margin-bottom: 3px; background-color: #E0E0E0; font-family: Arial, Helvetica, sans-serif; font-size: 10px; color: #006600; }
+
+.ashoppageheader { background-color: #F0F0F0; padding: 5px; width: 100%; border-style: none; }
+
+.ashoppageheadertext1 { font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #000000; font-weight: bold; }
+
+.ashoppageheadertext2 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
+
+.ashopitemsframe { width: 100%; padding: 0px; vertical-align: top; text-align: left; }
+
+.ashopitembox { background-color: #FFFFFF; padding: 0px; border-style: solid; border-collapse: collapse; border-width: 1px; border-color: #A0A0A0; vertical-align: top; }
+
+.ashopitemdetailsbox { background-color: #FFFFFF; width: 600px;  border-style: solid; border-collapse: collapse; border-width: 1px; border-color: #A0A0A0; vertical-align: top; }
+
+.ashopitembackground { }
+
+.ashopitemboxcondensed { background-color: #FFFFFF; width: 100%; padding: 0px; border-style: none; border-collapse: collapse; }
+
+.ashopproductsmalltext { font-family: Arial, Helvetica, sans-serif; font-size: 10px; color: #000000; }
+
+.ashopproductname { font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #000000; font-weight: bold; }
+
+.ashopproductinfo { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FF0000; }
+
+.ashopproductwishlist { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; line-height: 20px; }
+
+.ashopproducttext { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
+
+.ashopproductoutofstock { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FF0000; font-weight: bold; }
+
+.ashopproductlowstock { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #BB5500; }
+
+.ashopproductinstock { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #00AA00; }
+
+.ashopproductsale { font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #FF0000; font-weight: bold; }
+
+.ashopproductlabel { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; font-weight: bold; }
+
+.ashopproductbid { font-family: Arial, Helvetica, sans-serif; font-size: 20px; color: #000000; font-weight: bold; }
+
+.ashopproductagreementheader { font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #000000; }
+
+.ashopproductagreement { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
+
+.ashopdiscountfield { border: 1px solid #A0A0A0; background: #FFFFFF; width: 77px; height: 18px; font: 9px verdana, arial, helvetica; color: #000000; text-align: center; }
+
+.ashopdiscountemailfield { border: 1px solid #A0A0A0; background: #FFFFFF; width: 110px; height: 18px; font: 9px verdana, arial, helvetica; color: #000000; text-align: center; }
+
+.ashopquantityfield { border: 1px solid #A0A0A0; background: #FFFFFF; width: 48px; height: 18px; font: 9px verdana, arial, helvetica; color: #000000; text-align: center; }
+
+.ashoprsssubscribe { font-family: Arial, Helvetica, sans-serif; font-size: 9px; color: #000000; text-decoration: none; vertical-align: bottom }
+
+.ashoppagestable { background-color: #E0E0E0; padding: 5px; width: 100%; border-style: none; }
+
+.ashoppageslist { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; font-weight: bold; }
+
+.ashopalert { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FF0000; font-weight: bold; }
+
+.ashopmessagetable { padding: 0px; width: 75%; border-style: none; }
+
+.ashopmessageheader { font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #000000; font-weight: bold; }
+
+.ashopmessage { font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #000000; }
+
+.ashopcartframe1 { padding: 5px; width: 600px; border-style: none; }
+
+.ashopcarttext { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; font-weight: bold; }
+
+.ashopcartframe2 { background-color: #FFFFFF; padding: 5px; width: 100%; border-style: solid; border-width: 1px; border-color: #000000; }
+
+.ashopcarttable { padding: 5px; width: 100%; border-style: solid; border-width: 1px; border-collapse: collapse; border-color: #000000; }
+
+.ashopcartlabel { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; font-weight: bold; }
+
+.ashopcartcontents { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
+
+.ashopcartcontentsmall { font-family: Arial, Helvetica, sans-serif; font-size: 10px; color: #000000; }
+
+.ashopcarttotals { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
+
+.ashopcheckoutframe { padding: 5px; width: 600px; border-style: none; }
+
+.ashopcheckouttext1 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; font-weight: bold; }
+
+.ashopcheckouttext2 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
+
+.ashopcheckouttable { background-color: #FFFFFF; padding: 5px; width: 500px; border-style: solid; border-width: 1px; border-color: #000000; }
+
+.ashopdiscounttable { background-color: #FFFFFF; padding: 5px; width: 500px; border-style: solid; border-width: 1px; border-color: #000000; }
+
+.ashopdiscounttext { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
+
+.ashopcheckoutcontents { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
+
+.ashopcheckoutagreement { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
+
+.ashopcheckoutagreementtable { padding: 10px; width: 100%; border-style: none; }
+
+.ashoporderformframe { padding: 2px; width: 500px; border-style: none; }
+
+.ashoporderformbox { background-color: #FFFFFF; padding: 2px; width: 500px; border-style: solid; border-width: 1px; border-color: #000000; }
+
+.ashoporderformheader { font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #000000; font-weight: bold; }
+
+.ashoporderformtext1 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; font-weight: bold; }
+
+.ashoporderformtext2 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
+
+.ashoporderformlabel { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
+
+.ashoporderformfield { text-align: left; }
+
+.ashoporderformnotice { font-family: Arial, Helvetica, sans-serif; font-size: 10px; color: #000000; }
+
+.ashoplanguageselectionbox { background-color: #FFFFFF; padding: 2px; width: 300px; border-style: solid; border-width: 1px; border-color: #000000; }
+
+.ashoplanguageselection { font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #000000; }
+
+.ashopdeliveryheader { font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #000000; font-weight: bold; }
+
+.ashopdeliverytext1 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; font-weight: bold; }
+
+.ashopdeliverytext2 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
+
+.ashopdeliverycontactframe { padding: 2px; width: 40%; border-style: none; }
+
+.ashopdownloadframe { padding: 2px; width: 600px; border-style: none; }
+
+.ashopshippingerror { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FF0000; font-weight: bold; }
+
+.ashopshippingframe { padding: 15px; width: 500px; border-style: none; }
+
+.ashopshippingbox { background-color: #FFFFFF; padding: 2px; width: 500px; border-style: solid; border-width: 1px; border-color: #000000; }
+
+.ashopshippingtext1 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
+
+.ashopshippingtext2 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
+
+.ashopshippingnotice { font-family: Arial, Helvetica, sans-serif; font-size: 10px; color: #000000; }
+
+.ashopthankyouframe { padding: 2px; width: 600px; border-style: none; }
+
+.ashopthankyouheader { font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #000000; font-weight: bold; }
+
+.ashopthankyoutext1 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; font-weight: bold; }
+
+.ashopthankyoutext2 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
+
+.ashopcustomerloginframe { padding: 2px; width: 500px; border-style: none; }
+
+.ashopcustomersignupframe { padding: 2px; width: 500px; border-style: none; }
+
+.ashopcustomersignupbox { background-color: #FFFFFF; padding: 2px; width: 500px; border-style: solid; border-width: 1px; border-color: #000000; }
+
+.ashopcustomercodebox { background-color: #D0D0D0; padding: 5px; width: 530px; border-style: none; }
+
+.ashopcustomerheader { font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #000000; font-weight: bold; }
+
+.ashopcustomertext1 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; font-weight: bold; }
+
+.ashopcustomertext2 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
+
+.ashopcustomertext3 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
+
+.ashopcustomertext4 { font-family: Arial, Helvetica, sans-serif; font-size: 10px; color: #000000; }
+
+.ashopcustomertext4 a { text-decoration: none; color: #000000; }
+
+.ashopcustomertext4 a:hover { text-decoration: underline; }
+
+.ashopcustomertext5 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FFFFFF; text-decoration: none; }
+
+.ashopcustomertext5 a { text-decoration: none; color: #FFFFFF; }
+
+.ashopcustomertext5 a:hover { text-decoration: underline; }
+
+.ashopcustomeralert { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FF0000; font-weight: bold; }
+
+.ashopcustomeralert2 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #009900; font-weight: bold; }
+
+.ashopcustomerfield { text-align: left; }
+
+.ashopcustomernotice { font-family: Arial, Helvetica, sans-serif; font-size: 10px; color: #000000; }
+
+.ashopcustomerhistorybox { background-color: #D0D0D0; padding: 2px; width: 700px; border-style: solid; border-width: 1px; border-color: #000000; }
+
+.ashopcustomerhistoryrow { background-color: #808080; }
+
+.ashopcustomerhistorytext1 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FFFFFF; font-weight: bold; }
+
+.ashopcustomerhistorytext2 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FF0000; }
+
+.ashopaffiliateloginframe { padding: 2px; width: 500px; border-style: none; }
+
+.ashopaffiliatesignupframe { padding: 2px; width: 500px; border-style: none; }
+
+.ashopaffiliatesignupbox { background-color: #FFFFFF; padding: 2px; width: 500px; border-style: solid; border-width: 1px; border-color: #000000; }
+
+.ashopaffiliatecodebox { background-color: #D0D0D0; padding: 5px; width: 530px; border-style: none; }
+
+.ashopaffiliateheader { font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #000000; font-weight: bold; }
+
+.ashopaffiliatetext1 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; font-weight: bold; }
+
+.ashopaffiliatetext2 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
+
+.ashopaffiliatetext3 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
+
+.ashopaffiliatefield { text-align: left; }
+
+.ashopaffiliatenotice { font-family: Arial, Helvetica, sans-serif; font-size: 10px; color: #000000; }
+
+.ashopaffiliatehistorybox { background-color: #D0D0D0; padding: 2px; width: 450px; border-style: solid; border-width: 1px; border-color: #000000; }
+
+.ashopaffiliatehistoryrow { background-color: #808080; }
+
+.ashopaffiliatehistorytext1 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FFFFFF; font-weight: bold; }
+
+.ashopaffiliatehistorytext2 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FF0000; }
+
+.ashopmallcategories { border: 2px solid #bbbbbb; background: #ffffff; width: 98%; font: 11px verdana, arial, helvetica; color: #000000; text-align: left; }
+
+.ashopmallsearch { border: 2px solid #bbbbbb; background: #ffffff; width: 95%; height: 20px; font: 11px verdana, arial, helvetica; color: #000000; text-align: left; }
+
+.ashopmallbox { width: 100%; background-color: #FFFFFF; padding: 0px; border-style: none; vertical-align: top; text-align: left; }
+
+.ashopmallname { font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #000000; font-weight: bold; }
+
+.ashopmalltext { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
+
+.ashopmallsignupframe { padding: 2px; width: 500px; border-style: none; }
+
+.ashopmallsignupbox { background-color: #FFFFFF; padding: 2px; width: 500px; border-style: solid; border-width: 1px; border-color: #000000; }
+
+.ashopmallsignupheader { font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #000000; font-weight: bold; }
+
+.ashopmallsignuptext1 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; font-weight: bold; }
+
+.ashopmallsignuptext2 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
+
+.ashopmallsignuptext3 { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
+
+.ashopmallsignupfield { text-align: left; }
+
+.ashopmallsignupnotice { font-family: Arial, Helvetica, sans-serif; font-size: 10px; color: #000000; }
+
+.ashopsignupframe { padding: 2px; width: 600px; border-style: none; }
+
+.ashopsignupbox { background-color: #FFFFFF; padding: 2px; width: 600px; border-style: solid; border-width: 1px; border-color: #000000; }
+
+.ashopsignupcodebox { background-color: #D0D0D0; padding: 5px; width: 530px; border-style: none; }
+
+.ashopsignupheader { font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #000000; font-weight: bold; }

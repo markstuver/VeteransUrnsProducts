@@ -1,0 +1,101 @@
+<html><head><title>%ashopname% Receipt</title></head><body>
+<!-- Contact %ashopemail% if you have trouble with HTML messages. -->
+<table width="600" border="1" noshade cellspacing="0" cellpadding="5" bordercolor="#CCCCCC" bgcolor="#FFFFCC" align="center">
+  <tr> 
+    <td width="180"><font face="Arial, Helvetica, sans-serif" size="2"><b>Order Date:</b> %dateshort%<br><b>Reference:</b> %invoice%</font></td>
+    <td align="center" width="420" bgcolor="#FFFFFF"><font face="Arial, Helvetica, sans-serif" size="2"><b>%ashopname%</b></font><br><font face="Verdana, Arial, Helvetica, sans-serif" color="#003366"><b>RECEIPT</b></font></td>
+  </tr>
+  <tr> 
+    <td colspan="2"> 
+    <table width="100%" border="0" cellpadding="5"><tr><td width="60" valign="top"><b><font face="Arial, Helvetica, sans-serif" size="2">Sold To:</font></b></td><td valign="top" bgcolor="#ffffff"><font face="Arial, Helvetica, sans-serif" size="2">%customer_firstname% %customer_lastname% <br>
+          %customer_address%<br>
+          %customer_city%, %customer_state% %customer_zip%<br>
+          %customer_country%<br>
+	  %customer_email%, %customer_phone%<br>
+	  %customer_info%
+	  <!-- Newcustomerpassword --><br>Password: %newcustomerpassword%<!-- /Newcustomerpassword -->
+	  </font></td></tr>
+    </table>
+</td>
+  </tr>
+  <tr> 
+    <td colspan="2"><table bordercolor="#cccccc" cellspacing="0" cellpadding="0" width="100%" align="center" border="0"><tr bgcolor="#ffffcc">
+    <td align="middle" width="30"><b><font face="Arial, Helvetica, sans-serif" size="2"><u>Qty</u></font></b></td><td width="433"><b><font face="Arial, Helvetica, sans-serif" size="2"><u>Description</u></font></b></td>
+    <td align="right" width="70"><b><font face="Arial, Helvetica, sans-serif" size="2"><u>Price</u></font></b></td>
+    <td align="right" width="70"><b><font face="Arial, Helvetica, sans-serif" size="2"><u>Amount</u></font></b></td></tr>%receipt_description%
+  <tr>
+    <td align="right" valign="bottom" bgcolor="#ffffff" colspan="2" rowspan="5"><font face="Arial, Helvetica, sans-serif" size="2"><b>Paid By:</b> %payoption% %payoptionfee%</font></td>
+    <td align="right" width="70" bgcolor="#ffffcc"><b><font face="Arial, Helvetica, sans-serif" size="2">Subtotal:</font></b></td>
+    <td align="right" width="70" bgcolor="#ffffff"><font face="Arial, Helvetica, sans-serif" size="2">%subtotal%</font></td></tr>
+  <tr>
+    <td align="right" width="70" bgcolor="#ffffcc"><b><font face="Arial, Helvetica, sans-serif" size="2">Tax:</font></b></td>
+    <td align="right" width="70" bgcolor="#ffffff"><font face="Arial, Helvetica, sans-serif" size="2">%salestax%</font></td></tr>
+  <tr>
+    <td align="right" width="70" bgcolor="#ffffcc"><b><font face="Arial, Helvetica, sans-serif" size="2">Shipping:</font></b></td>
+    <td align="right" width="70" bgcolor="#ffffff"><font face="Arial, Helvetica, sans-serif" size="2">%shipping%</font></td></tr>
+
+<!-- Shippingdiscount -->
+  <tr>
+    <td align="right" width="70" bgcolor="#ffffcc"><b><font face="Arial, Helvetica, sans-serif" size="2">Discount:</font></b></td>
+    <td align="right" width="70" bgcolor="#ffffff"><font face="Arial, Helvetica, sans-serif" size="2">-%shippingdiscount%</font></td></tr>
+<!-- /Shippingdiscount -->
+
+<!-- Virtualcash -->
+  <tr>
+    <td align="right" width="70" bgcolor="#ffffcc"><b><font face="Arial, Helvetica, sans-serif" size="2">Virtual cash:</font></b></td>
+    <td align="right" width="70" bgcolor="#ffffff"><font face="Arial, Helvetica, sans-serif" size="2">-%virtualcash%</font></td></tr>
+<!-- /Virtualcash -->
+
+  <tr>
+    <td align="right" width="70" bgcolor="#ffffcc"><font face="Arial, Helvetica, sans-serif" size="2"><b>Total:</b></font></td>
+    <td align="right" width="70" bgcolor="#ffffff"><font face="Arial, Helvetica, sans-serif" size="2"><b>%amount%</b></font></td></tr></table>
+    </td>
+  </tr>
+
+<!-- Specialinstructions -->
+  <tr> 
+    <td colspan="2"><p align="center"><font face="Verdana" size="2"><b>Special 
+      Instructions</b></font></p>
+
+<!-- Shippingaddress -->
+	<table width="100%" cellpadding="5"><tr><td valign="top" width="60"><p><b><font face="Arial, Helvetica, sans-serif" size="2">Ship To:</font></b></p></td><td valign="top" bgcolor="#ffffff"><p><font face="Arial, Helvetica, sans-serif" size="2">%customer_shippingaddress%</font></p>
+<!-- Shippingoption -->
+	<p><font face="Arial, Helvetica, sans-serif" size="2">Selected shipping option: %shipoptions%</font></p>
+<!-- /Shippingoption -->
+    </td></tr></table>
+<!-- /Shippingaddress -->
+
+<!-- Downloads -->
+    <p><font face="Arial, Helvetica, sans-serif" size="2"><b>Product File Download:</b></font><table width="100%" border="0" cellpadding="5"><tr><td bgcolor="#ffffff"><p><font face="Arial, Helvetica, sans-serif" size="2"><a href="%ashopurl%/deliver.html">%ashopurl%/deliver.html</a><br><b>Login eMail:</b> %customer_email%<br><b>Password:</b> %password%</font></p><p><font face="Arial, Helvetica, sans-serif" size="2">If you experience any difficulty with this download or lose your connection before the download is complete, use the link and password from your e-mail receipt for a fresh download. Your password will be valid for %downloadtimes% downloads within %downloaddays% day(s).</font></p></td></tr></table></p>
+<!-- /Downloads -->
+
+<!-- Unlockkeys -->
+    <p><font face="Arial, Helvetica, sans-serif" size="2"><b>Software Registration Key(s):</b></font><br><table width="100%" cellpadding="5"><tr><td bgcolor="#ffffff" align="center"><font face="Arial, Helvetica, sans-serif" size="2">%unlockkeys%</font></td></tr></table></p>
+<!-- /Unlockkeys -->
+
+<!-- Subscriptions -->
+    <p><font face="Arial, Helvetica, sans-serif" size="2"><b>Access To Protected Directories:</b></font><br><table width="100%" cellpadding="5"><tr><td bgcolor="#ffffff" align="center"><font face="Arial, Helvetica, sans-serif" size="2">%subscriptionlinks%</font></td></tr><tr><td bgcolor="#ffffff"><font face="Arial, Helvetica, sans-serif" size="2">You can access the protected directories you have subscribed to by logging in with your email address and the password <b>%password%</b></font></td></tr></table></p>
+<!-- /Subscriptions -->
+
+<!-- Manualpayment -->
+   <table width="100%" border="0" cellpadding="5"><tr><td bgcolor="#ffffff"><p><font face="Arial, Helvetica, sans-serif" size="2">A manual payment method has been selected for this order. Orders will be fulfilled upon receipt of payment by check or other means.</font></p></td></tr></table>
+<!-- /Manualpayment -->
+
+<!-- Licenseagreement -->
+    <p><font face="Arial, Helvetica, sans-serif" size="2"><b>You have agreed to the following terms and conditions:</b></font><br><table width="100%" cellpadding="5"><tr><td bgcolor="#ffffff" align="center"><font face="Arial, Helvetica, sans-serif" size="2">%licenseagreement%</font></td></tr></table></p>
+<!-- /Licenseagreement -->
+  </td>
+  </tr>
+<!-- /Specialinstructions -->
+
+  <tr align="center"> 
+    <td colspan="2"> <font face="Arial, Helvetica, sans-serif" size="2"><b>%ashopname%</b><br>
+      %ashopaddress%<br>
+      %ashopemail%<br>
+      %ashopphone%<br>
+
+<!-- Membershop -->
+This order was placed through the member shop: %membershop%
+<!-- /Membershop -->
+
+</font></td></tr></table></body></html>

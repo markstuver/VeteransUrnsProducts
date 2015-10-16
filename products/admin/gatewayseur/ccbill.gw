@@ -1,0 +1,115 @@
+<?php
+// CCBill...
+$gatewayname = "CCBill";
+$paymenturl = "https://bill.ccbill.com/jpost/signup.cgi";
+$postbackurl = "$ashopurl/order.php";
+$visibleorderprocessing = "FALSE";
+$resultpagessl = "FALSE";
+$sendpayoptionid = "FALSE";
+$gw_orderid = "ashopOrderid";
+$gw_amount = "formPrice";
+$gw_merchantid = "clientAccnum";
+$gw_logourl = "";
+$gw_vspartner = "";
+$gw_pageid = "";
+$gw_description = "ashopDescription";
+$gw_returnurl1 = "";
+$gw_returnurl2 = "";
+$gw_cancel = "";
+$gw_basket = "ashopProducts";
+$gw_affiliate = "ashopAffiliate";
+$gw_bgcolor = "";
+$gw_bgurl = "";
+$gw_firstname = "customer_fname";
+$gw_lastname = "customer_lname";
+$gw_address = "address1";
+$gw_city = "city";
+$gw_zip = "zipcode";
+$gw_state = "state";
+$gw_country = "country";
+$gw_email = "email";
+$gw_phone = "phone_number";
+$gw_shipfirstname = "";
+$gw_shiplastname = "";
+$gw_shipaddress = "";
+$gw_shipcity = "";
+$gw_shipzip = "";
+$gw_shipstate = "";
+$gw_shipcountry = "";
+
+// Change these to control the recurring payment cycles...
+$ccbill_initialperiod = "30"; // 30 days before the first recurring payment
+$ccbill_recurringperiod = "30"; // 30 days between recurring payments
+$ccbill_rebills = "99"; // 99 = rebill indefinitely
+
+// Convert security secret into formname and secret...
+$ccbillarray = explode("|",$secret);
+$secret = $ccbillarray[0];
+$formname = $ccbillarray[1];
+
+$gw_extrafields = "<input type=\"hidden\" name=\"formName\" value=\"$formname\">
+<input type=\"hidden\" name=\"clientSubacc\" value=\"0000\">
+<input type=\"hidden\" name=\"formPeriod\" value=\"$ccbill_initialperiod\">
+<input type=\"hidden\" name=\"currencyCode\" value=\"978\">
+";
+if (!empty($recurringtotal) && is_numeric($recurringtotal)) {
+	$recurringtotal = number_format($recurringtotal,2,'.','');
+	$gw_extrafields .= "<input type=\"hidden\" name=\"formRecurringPrice\" value=\"$recurringtotal\">
+	<input type=\"hidden\" name=\"formRecurringPeriod\" value=\"$ccbill_recurringperiod\">
+	<input type=\"hidden\" name=\"formRebills\" value=\"$ccbill_rebills\">
+	";
+	$formDigest = md5($subtotal.$ccbill_initialperiod.$recurringtotal.$ccbill_recurringperiod.$ccbill_rebills."978".$secret);
+} else $formDigest = md5($subtotal.$ccbill_initialperiod."978".$secret);
+$gw_extrafields .= "<input type=\"hidden\" name=\"formDigest\" value=\"$formDigest\">";
+$testrequest = "";
+
+$gw_parameters['merchantid'] = "true";
+$gw_parameters['secret'] = "true";
+$gw_parameters['transactionkey'] = "false";
+$gw_parameters['logourl'] = "false";
+$gw_parameters['vspartner'] = "false";
+$gw_parameters['pageid'] = "false";
+$gw_parameters['testmode'] = "false";
+$gw_parameters['autodelivery'] = "false";
+$gw_parameters['deliverpending'] = "false";
+$gw_parameters['gwbgcolor'] = "false";
+$gw_parameters['gwbgurl'] = "false";
+$gw_parameters['paymentinfo'] = "false";
+$gw_parameters['telesign'] = "false";
+
+if ( ! function_exists('authenticate') ) {
+	function authenticate($gateway_input, $securityhash, $merchant) {
+		global $formname, $secret;
+		$responseDigest = md5($gateway_input['subscription_id']."1".$securityhash);
+		if ($gateway_input['formName'] != $formname || $gateway_input['clientSubacc'] != "0000" || $gateway_input['responseDigest'] != $responseDigest) $validate[0] = "INVALID";
+		else $validate[0] = "VERIFIED";
+		return $validate;
+	}
+}
+
+if ( ! function_exists('process_payment') ) {
+	function process_payment($user, $password, $vspartner, $cardtype, $ccnumber, $seccode, $expdate, $amount, $invoice, $firstname, $lastname, $address, $city, $zip, $state, $country, $phone, $email, $testmode, $description) {
+	}
+}
+
+if ( ! function_exists('parse_response') ) {
+	function parse_response($gateway_input) {
+		$response['invoicenum']=$gateway_input['ashopOrderid'];
+		$response['email']=$gateway_input['email'];
+		$response['firstname']=$gateway_input['customer_fname'];
+		$response['lastname']=$gateway_input['customer_lname'];
+		$response['address']=$gateway_input['address1'];
+		$response['zip']=$gateway_input['zipcode'];
+		$response['city']=$gateway_input['city'];
+		$response['state']=$gateway_input['state'];
+		$response['country']=$gateway_input['country'];
+		$response['remoteorderid']=$gateway_input['subscription_id'];
+		$response['phone']=$gateway_input['phone_number'];
+		$response['price']=$gateway_input['initialPrice'];
+		$response['products']=$gateway_input['ashopProducts'];
+		$response['description']=$gateway_input['ashopDescription'];
+		$response['affiliate']=$gateway_input['ashopAffiliate'];
+		return $response;
+	}
+}
+?>

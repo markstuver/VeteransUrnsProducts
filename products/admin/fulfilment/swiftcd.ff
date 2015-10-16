@@ -1,0 +1,113 @@
+<?php
+// SwiftCD...
+$fulfilmentname = "Swift CD";
+   
+$ff_parameters['fulfilemail'] = "false";
+$ff_parameters['fulfilmessage'] = "false";
+$ff_parameters['userid'] = "true";
+$ff_parameters['password'] = "false";
+$ff_parameters['url'] = "false";
+$ff_parameters['parameternames'] = "false";
+$ff_parameters['extrafields'] = "false";
+$ff_parameters['returnresult'] = "false";
+$ff_parameters['discount'] = "false";
+$ff_parameters['ecardimage'] = "false";
+$ff_parameters['ecardfont'] = "false";
+$ff_parameters['ecardtextcolor'] = "false";
+$ff_parameters['ecardtexttop'] = "false";
+$ff_parameters['ecardtextleft'] = "false";
+$ff_parameters['ecardtextright'] = "false";
+
+$ff_prodparameters['productid'] = "true";
+$ff_prodparameters['productidlist'] = "false";
+$ff_prodparameters['labelnumber'] = "true";
+$ff_prodparameters['packagenumber'] = "true";
+$ff_prodparameters['parameternames'] = "false";
+
+if ($dofulfilment) {
+	$swiftemail = "order@swiftcd.com";
+	$ordernumber = 1;
+	$numberofcds = 0;
+	$fulfilmentdate = date("Ymd", time()+$timezoneoffset);
+	if($productsinfo) foreach($productsinfo as $productnumber => $productinfo) {
+		if($productinfo) foreach($productinfo as $key => $value) {
+			if($key == "quantity") $thisffquantity = $value;
+			if($key == "ffproductid") $thisffproductid = $value;
+			if($key == "fflabelnumber") $thisfflabelnumber = $value;
+			if($key == "ffpackagenumber") $thisffpackagenumber = $value;
+		}
+		$numberofcds += $thisffquantity;
+		$swiftbatchorders .= "Order:$ordernumber\r\n";
+		$swiftbatchorders .= "TrackingID:ashoporder_".$invoiceid."_$ordernumber\r\n";
+		$swiftbatchorders .= "CustID:$fulfilmentuserid\r\n";
+		$swiftbatchorders .= "ProductID:$thisffproductid\r\n";
+		$swiftbatchorders .= "Quantity:$thisffquantity\r\n";
+		$swiftbatchorders .= "Label:$thisfflabelnumber\r\n";
+		$swiftbatchorders .= "Label2:\r\n";
+		$swiftbatchorders .= "Label3:\r\n";
+		$swiftbatchorders .= "Field1:\r\n";
+		$swiftbatchorders .= "Field2:\r\n";
+		$swiftbatchorders .= "Field3:\r\n";
+		$swiftbatchorders .= "PackageID:$thisffpackagenumber\r\n";
+		$swiftbatchorders .= "ShippingFirstName:";
+		if($shippingfirstname) $swiftbatchorders .= "$shippingfirstname\r\n";
+		else $swiftbatchorders .= "$parsed_firstname\r\n";
+		$swiftbatchorders .= "ShippingLastName:";
+		if($shippinglastname) $swiftbatchorders .= "$shippinglastname\r\n";
+		else $swiftbatchorders .= "$parsed_lastname\r\n";
+		$swiftbatchorders .= "ShippingAddr1:";
+		if($shippingaddress) $swiftbatchorders .= "$shippingaddress\r\n";
+		else $swiftbatchorders .= "$parsed_address\r\n";
+		$swiftbatchorders .= "ShippingAddr2:\r\n";
+		$swiftbatchorders .= "ShippingCity:";
+		if($shippingcity) $swiftbatchorders .= "$shippingcity\r\n";
+		else $swiftbatchorders .= "$parsed_city\r\n";
+		$swiftbatchorders .= "ShippingState:";
+		if($shippingstate) $swiftbatchorders .= "$shippingstate\r\n";
+		else $swiftbatchorders .= "$parsed_state\r\n";
+		$swiftbatchorders .= "ShippingProvince:\r\n";
+		$swiftbatchorders .= "ShippingCountry:";
+		if($shippingcountry) $swiftbatchorders .= "$shippingcountry\r\n";
+		else $swiftbatchorders .= "$parsed_country\r\n";
+		$swiftbatchorders .= "ShippingZip:";
+		if($shippingzip) $swiftbatchorders .= "$shippingzip\r\n";
+		else $swiftbatchorders .= "$parsed_zip\r\n";
+		$swiftbatchorders .= "ShippingEmail: $parsed_email\r\n";
+		$swiftbatchorders .= "ShippingPhone:$parsed_phone\r\n";
+		$swiftbatchorders .= "EndOfOrder:".$ordernumber."\r\n";
+		$ordernumber++;
+	}
+	// Create fulfilment mail...
+	$swiftbatchmessage = "Date:$fulfilmentdate\r\n";
+	$swiftbatchmessage .= "TotalOrders:".count($productsinfo)."\r\n";
+	$swiftbatchmessage .= "TotalCDs:$numberofcds\r\n";
+	$swiftbatchmessage .= $swiftbatchorders;
+	$swiftbatchmessage .= "EndAllOrders\r\n";
+
+	$filename = "CD_Order_".$fulfilmentuserid."_".$fulfilmentdate.".txt";
+	$subject = "CD Order $fulfilmentuserid $fulfilmentdate";
+
+	$mime_boundary = "<<<:" . md5(uniqid(mt_rand(), 1));
+	$data = chunk_split(base64_encode($swiftbatchmessage));
+
+	$header = "From: ".un_html($ashopname)."<$ashopemail>\n";
+	$header.= "X-Sender: <$ashopemail>\n";
+	$header.= "X-Mailer: PHP\nX-Priority: 3\n";
+	$header.= "Return-Path: <$ashopemail>\n";
+	$header.= "MIME-Version: 1.0\n";
+	$header.= "Content-Type: multipart/mixed;\n";
+	$header.= " boundary=\"".$mime_boundary."\"\n";
+
+	$content = "This is a multi-part message in MIME format.\n\n";
+	$content.= "--".$mime_boundary."\n";
+	$content.= "Content-Type: text/plain; charset=\"iso-8859-1\"\n";
+	$content.= "Content-Transfer-Encoding: 7bit\n\n";
+	$content.= "\n";
+	$content.= "--".$mime_boundary."\n";
+	$content.= "Content-Disposition: attachment;\n";
+	$content.= "Content-Type: Application/Octet-Stream; name=\"".$filename."\"\n";
+	$content.= "Content-Transfer-Encoding: base64\n\n";
+	$content.= $data."\n";
+	@mail($swiftemail, $subject, $content, $header);
+}
+?>

@@ -1,0 +1,74 @@
+<?php
+// WorldPay...
+$gatewayname = "WorldPay";
+$paymenturl = "https://secure.worldpay.com/wcc/purchase";
+$postbackurl = "$ashopurl/order.php";
+$visibleorderprocessing = "TRUE";
+$resultpagessl = "FALSE";
+$sendpayoptionid = "FALSE";
+$gw_orderid = "cartId";
+$gw_amount = "amount";
+$gw_merchantid = "instId";
+$gw_logourl = "";
+$gw_vspartner = "";
+$gw_pageid = "";
+$gw_description = "desc";
+$gw_returnurl1 = "";
+$gw_returnurl2 = "";
+$gw_cancel = "";
+$gw_basket = "M_productid";
+$gw_affiliate = "M_affiliate";
+$gw_bgcolor = "";
+$gw_bgurl = "";
+$gw_extrafields = "<input type=\"hidden\" name=\"currency\" value=\"EUR\">
+<input type=\"hidden\" name=\"cartId\" value=\"ashop\">";
+$testrequest = "";
+
+$gw_parameters['merchantid'] = "true";
+$gw_parameters['secret'] = "";
+$gw_parameters['transactionkey'] = "false";
+$gw_parameters['logourl'] = "";
+$gw_parameters['vspartner'] = "false";
+$gw_parameters['pageid'] = "false";
+$gw_parameters['testmode'] = "true";
+$gw_parameters['autodelivery'] = "true";
+$gw_parameters['deliverpending'] = "false";
+$gw_parameters['gwbgcolor'] = "";
+$gw_parameters['gwbgurl'] = "";
+$gw_parameters['paymentinfo'] = "false";
+$gw_parameters['telesign'] = "false";
+
+$testrequest = "<input type=\"hidden\" name=\"testMode\" value=\"100\">\n";
+
+if ( ! function_exists('authenticate') ) {
+	function authenticate($gateway_input, $securityhash, $merchant) {
+		if ($gateway_input['transStatus'] == "Y") $validate[0] = "VERIFIED";
+		else $validate[0] = "INVALID";
+		if ($gateway_input['rawAuthMessage']) $validate[1] = $gateway_input['rawAuthMessage'];
+		return $validate;
+	}
+}
+
+if ( ! function_exists('process_payment') ) {
+	function process_payment($user, $password, $vspartner, $cardtype, $ccnumber, $seccode, $expdate, $amount, $invoice, $firstname, $lastname, $address, $city, $zip, $state, $country, $phone, $email, $testmode, $description) {
+	}
+}
+
+if ( ! function_exists('parse_response') ) {
+	function parse_response($gateway_input) {
+		$response['invoicenum']=$gateway_input['cartId'];
+		$response['email']=$gateway_input['email'];
+		$response['firstname']=$gateway_input['name'];
+		$response['address']=$gateway_input['address'];
+		$response['zip']=$gateway_input['postcode'];
+		$response['country']=$gateway_input['country'];
+		$response['remoteorderid']=$gateway_input['transId'];
+		$response['phone']=$gateway_input['tel'];
+		$response['price']=$gateway_input['amount'];
+		$response['products']=$gateway_input['M_productid'];
+		$response['description']=$gateway_input['desc'];
+		$response['affiliate']=$gateway_input['M_affiliate'];
+		return $response;
+	}
+}
+?>

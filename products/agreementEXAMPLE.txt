@@ -1,0 +1,9 @@
+Sample purchase agreement
+<br><br>
+1. FIRST PARAGRAPH
+<br><br>
+This file may be used to display an agreement with general rules about buying products from a website using AShop Deluxe. The customer will need to click "I agree" to complete a purchase which indicates that they agree to be bound by the terms of the agreement. This does not replace the product license agreements which can be used to display a separate license text for each product when the product is placed in the shopping cart. The contents of this file will instead be displayed on checkout just before the customer gets to fill out the payment form for their selected payment option.
+<br><br>
+5. SECOND PARAGRAPH
+<br><br>
+Edit this file and rename it to agreement.txt to display your own agreement text. The text can contain html code but should not contain the html or body tags since it is already displayed inside a web page.

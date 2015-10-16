@@ -1,0 +1,31 @@
+<?php
+define('CHARSET', '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />');
+define('TOCOMPLETEORDER', 'To complete this order, you must<br>accept the terms of sale!');
+define('CLOSE', 'Close this window');
+define('ERROR', 'Error! The item you ordered is not in our catalogue!');
+define('NOTFOUND', 'Item Not Found');
+define('NOTINCATALOGUE', 'The selected item is not found in the catalogue. Try another link for this item or contact the store administrator for help.');
+define('EMAILREQUIRED1', 'You forgot to enter your email!');
+define('EMAILREQUIRED2', 'This discount code can only be used if you enter a valid email address!');
+define('ALREADYINCART', 'This item is already in your cart!');
+define('TRYAGAIN', 'Try again!');
+define('ADD', 'Add To Cart');
+define('ITEM', 'Item');
+define('PRICEEACH', 'Price each');
+define('SELECTOPTIONS', 'Select Options');
+define('QTY', 'Qty');
+define('AGREE', ' I have read and agree to the ');
+define('TERMS', 'terms of the sale');
+define('TERMSFOR', 'for');
+define('PUTINCART', 'Put in shopping cart');
+define('CANCEL', 'Cancel');
+define('HASBEENADDED', 'has been added to your shopping cart');
+define('INCORRECTDISCOUNTCODE', 'Incorrect discount code!');
+define('AUCTIONNOTENDED', 'This auction has not ended yet!');
+define('NOTALLOWEDTOBUY', 'You are not allowed to buy this product!');
+define('OUTOFSTOCK', 'The product is sold out!');
+define('NOTENOUGHINSTOCK', 'There are not enough items in stock for this purchase!');
+define('NOTTHATMANYINSTOCK', 'There are not that many items in stock!');
+define('MUSTLOGIN', 'You have to login to be able to buy this product!');
+define('NOTALLOWEDQTY', 'You are not allowed to buy that many items!');
+?>

@@ -1,0 +1,80 @@
+<?php
+// Define menu sets...
+$menu_configuration = array (
+"configure.php",
+"payoptions.php",
+"fulfiloptions.php",
+"editlocaltax.php",
+"editzones.php",
+"editshipoptions.php",
+"editshipdiscounts.php",
+"shopcategories.php",
+"advancedoptions.php",
+"emconfigure.php",
+"editformfields.php"
+);
+$menu_catalog = array (
+"editcatalogue.php",
+"addcategory.php",
+"addproduct.php",
+"addcontent.php",
+"editstorediscounts.php",
+"filemanager.php",
+"importproducts.php",
+"editcontent.php",
+"editcategory.php",
+"pagegenerator.php",
+"editproduct.php",
+"editinventory.php",
+"editdiscount.php",
+"editshipping.php",
+"editfiles.php",
+"editparameters.php",
+"editalternatives.php",
+"editfulfilment.php",
+"editsubscr.php",
+"sendupdate.php",
+"moveproduct.php",
+"editqtypricing.php",
+"listkeycodes.php",
+"listsubscr.php"
+);
+$menu_shoppingmall = array (
+"memberadmin.php",
+"memberstats.php",
+"editmember.php",
+"editmembercat.php",
+"paymember.php",
+"memberpay.php"
+);
+$menu_affiliates = array (
+"affiliateadmin.php",
+"affiliatestats.php",
+"affiliatecodes.php",
+"affiliatetags.php",
+"affiliatecategories.php",
+"editaffiliate.php",
+"affiliatedetail.php",
+"referraldiscounts.php",
+"payaffiliate.php",
+"affiliatepay.php"
+);
+$menu_customers = array (
+"salesadmin.php",
+"edituser.php",
+"addcustomer.php",
+"editcustomer.php",
+"salesreport.php",
+"preliminary.php",
+"bannedcustomers.php",
+"downloadsreport.php",
+"wssalesadmin.php",
+"bidderadmin.php"
+);
+$menu_salesoffice = array (
+"emerchant.php",
+"emuseradmin.php",
+"editbilling.php",
+"editemuser.php"
+);
+?>

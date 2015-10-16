@@ -1,0 +1,67 @@
+RECEIPT from %ashopname%
+Order Date: %dateshort%
+Reference: %invoice%
+
+======== SOLD TO ========
+%customer_firstname% %customer_lastname%
+%customer_address%
+%customer_city%, %customer_state% %customer_zip%
+%customer_country%
+%customer_email%, %customer_phone%
+%customer_info%
+<!-- Newcustomerpassword -->Password: %newcustomerpassword%<!-- /Newcustomerpassword -->
+
+======== ORDER DETAILS ========
+%receipt_description%
+
+Subtotal: %subtotal%
+Tax: %salestax%
+Shipping: %shipping%
+<!-- Shippingdiscount -->Discount: -%shippingdiscount%<!-- /Shippingdiscount -->
+<!-- Virtualcash -->Virtual cash: -%virtualcash%<!-- /Virtualcash -->
+Total Amount: %amount%
+Paid By: %payoption% %payoptionfee%
+<!-- Specialinstructions -->
+======== SPECIAL INSTRUCTIONS ========
+<!-- Shippingaddress -->
+-------- Ship To --------
+%customer_shippingaddress%
+<!-- Shippingoption -->
+Selected shipping option: %shipoptions%
+<!-- /Shippingoption -->
+<!-- /Shippingaddress -->
+<!-- Downloads -->
+-------- Product File Download(s) --------
+Product File Download: %ashopurl%/deliver.html
+Login eMail: %customer_email%
+Password: %password%
+
+If you experience any difficulty with this download or lose your connection before the download is complete, use the link and password from your e-mail receipt for a fresh download. Your password will be valid for %downloadtimes% downloads within %downloaddays% day(s).
+<!-- /Downloads -->
+<!-- Unlockkeys -->
+------------ Software Registration Key(s) --------
+%unlockkeys%
+<!-- /Unlockkeys -->
+<!-- Subscriptions -->
+Access To Protected Directories: %subscriptionlinks%
+You can access the protected directories you have subscribed to by logging in with your email address and the password: %password%
+<!-- /Subscriptions -->
+<!-- Manualpayment -->
+-------- Payment Processing --------
+A manual payment method has been selected for this order. Orders will be fulfilled upon receipt of payment by check or other means.
+<!-- /Manualpayment -->
+<!-- Licenseagreement -->
+-------- Terms of Purchase --------
+You have agreed to the following terms and conditions:
+%licenseagreement%
+<!-- /Licenseagreement -->
+<!-- /Specialinstructions -->
+======== MERCHANT INFORMATION ========
+%ashopname%
+%ashopaddress%
+%ashopemail%
+%ashopphone%
+<!-- Membershop -->
+======== MEMBER SHOP ========
+This order was placed through the member shop: %membershop%
+<!-- /Membershop -->

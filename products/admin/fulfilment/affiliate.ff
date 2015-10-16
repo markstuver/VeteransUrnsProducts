@@ -1,0 +1,135 @@
+<?php
+// Affiliate Signup...
+$fulfilmentname = "Affiliate Signup";
+   
+$ff_parameters['fulfilemail'] = "false";
+$ff_parameters['fulfilmessage'] = "false";
+$ff_parameters['userid'] = "false";
+$ff_parameters['password'] = "false";
+$ff_parameters['url'] = "false";
+$ff_parameters['parameternames'] = "false";
+$ff_parameters['extrafields'] = "false";
+$ff_parameters['returnresult'] = "true";
+$ff_parameters['level'] = "true";
+$ff_parameters['discount'] = "false";
+$ff_parameters['ecardimage'] = "false";
+$ff_parameters['ecardfont'] = "false";
+$ff_parameters['ecardtextcolor'] = "false";
+$ff_parameters['ecardtexttop'] = "false";
+$ff_parameters['ecardtextleft'] = "false";
+$ff_parameters['ecardtextright'] = "false";
+
+$ff_prodparameters['productid'] = "false";
+$ff_prodparameters['productidlist'] = "false";
+$ff_prodparameters['labelnumber'] = "false";
+$ff_prodparameters['packagenumber'] = "false";
+$ff_prodparameters['parameternames'] = "true";
+
+if ($dofulfilment) {
+
+	if($productsinfo) foreach($productsinfo as $productnumber => $productinfo) {
+		$paramquerystring = $productinfo["ffparamquerystring"];
+		$paramarray = explode("&",$paramquerystring);
+		if (!empty($paramarray) && is_array($paramarray)) foreach ($paramarray as $thisparameter) {
+			$thisparameterarray = explode("=",$thisparameter);
+			if ($thisparameterarray[0] == "affiliateid" && is_numeric($thisparameterarray[1])) $affiliateid = $thisparameterarray[1];
+			else if (strstr($thisparameterarray[0],"user")) $affiliateuser = $thisparameterarray[1];
+			else if (strstr($thisparameterarray[0],"email")) $affiliateemail = $thisparameterarray[1];
+		}
+	}
+
+	if ($fulfilreturnmessage) $returnmessages["$fulfilmentoptionid"] = "";
+
+	// Check if affiliate is signed up already...
+	if (!empty($affiliateid) && is_numeric($affiliateid)) $affresult = @mysqli_query($db, "SELECT * FROM affiliate WHERE affiliateid='$affiliateid'");
+	else if (!empty($affiliateuser)) $affresult = @mysqli_query($db, "SELECT * FROM affiliate WHERE user='$affiliateuser'");
+	else if (!empty($affiliateemail)) $affresult = @mysqli_query($db, "SELECT * FROM affiliate WHERE email='$affiliateemail'");
+	else $affresult = @mysqli_query($db, "SELECT * FROM affiliate WHERE email='$parsed_email'");
+	if (@mysqli_num_rows($affresult)) {
+		if ($fulfillevel == "2") {
+			if (!empty($affiliateid) && is_numeric($affiliateid)) $affresult = @mysqli_query($db, "UPDATE affiliate SET commissionlevel='$fulfillevel' WHERE affiliateid='$affiliateid'");
+			else if (!empty($affiliateuser)) $affresult = @mysqli_query($db, "UPDATE affiliate SET commissionlevel='$fulfillevel' WHERE user='$affiliateuser'");
+			else if (!empty($affiliateemail)) $affresult = @mysqli_query($db, "UPDATE affiliate SET commissionlevel='$fulfillevel' WHERE email='$affiliateemail'");
+			else @mysqli_query($db, "UPDATE affiliate SET commissionlevel='$fulfillevel' WHERE email='$parsed_email'");
+		}
+	} else {
+
+		// Generate a unique password...
+		function affPassword() {
+			$alphaNum = array(2, 3, 4, 5, 6, 7, 8, 9, a, b, c, d, e, f, g, h, i, j, k, m, n, p, q, r, s, t, u, v, w, x, y, z);
+			srand ((double) microtime() * 1000000);
+			$pwLength = "7"; // this sets the limit on how long the password is.
+			for($i = 1; $i <=$pwLength; $i++) {
+				$newPass .= $alphaNum[(rand(0,31))];
+			}
+			return ($newPass);
+		}
+		$affpassword = affPassword();
+		$unique = 0;
+		while (!$unique) {
+			$sql="SELECT password FROM affiliate WHERE password='$affpassword'";
+			$result = @mysqli_query($db, "$sql");
+			if (@mysqli_num_rows($result) == 0) $unique = 1;
+			else $affpassword = affPassword();
+		}
+
+		// Generate a unique user name...
+		$affusername = trim(strtolower($parsed_lastname));
+		$affresult = @mysqli_query($db, "SELECT * FROM affiliate WHERE user='$affusername'");
+		if (@mysqli_num_rows($affresult)) {
+			$usernumber = 1;
+			$unique = 0;
+			while(!$unique && $usernumber < 1000) {
+				$newusername = $affusername.$usernumber;
+				$affresult = @mysqli_query($db, "SELECT * FROM affiliate WHERE user='$newusername'");
+				if (@mysqli_num_rows($affresult)) $usernumber++;
+				else {
+					$unique = 1;
+					$affuser = $newusername;
+				}
+			}
+		} else $affuser = $affusername;
+
+		// Generate a unique referral code for manual referral...
+		$referralcode = substr(strtolower($parsed_firstname),0,2).substr(strtolower($parsed_lastname),0,3);
+		$referralcode .= str_repeat("0",5-strlen($referralcode));
+		$refnumber = 1;
+		$newreferralcode = $referralcode;
+		$referralcodenumber = $referralcode.sprintf("%03d",$refnumber);
+		$unique = 0;
+		$n = 0;
+		$m = ord("a");
+		while(!$unique) {
+			while(!$unique && $refnumber < 1000) {
+				$affresult = @mysqli_query($db, "SELECT * FROM affiliate WHERE referralcode='$referralcodenumber' OR user='$referralcodenumber'");
+				if(@mysqli_num_rows($affresult)) {
+					$refnumber++;
+					$referralcodenumber = $newreferralcode.sprintf("%03d",$refnumber);
+				} else $unique = 1;
+			} if(!$unique) {
+				$refnumber = 1;
+				$newreferralcode = substr_replace($referralcode, chr($m), $n, 1);
+				$referralcodenumber = $newreferralcode.sprintf("%03d",$refnumber);
+				if($m == ord("z")) {
+					$n++;
+					$m = ord("a");
+				} else $m++;
+			}
+		}
+
+		// Store affiliate data...
+		$sql = "INSERT INTO affiliate (user, password, firstname, lastname, email, address, state, zip, city, country, phone, url, affiliateid, signedup, updated, referralcode, commissionlevel) VALUES ('$affuser', '$affpassword', '$parsed_firstname', '$parsed_lastname', '$parsed_email', '$parsed_address', '$parsed_state', '$parsed_zip', '$parsed_city', '$parsed_country', '$parsed_phone', '', 0, '$date', '$date', '$referralcodenumber', '$fulfillevel')";
+		$affresult = @mysqli_query($db, "$sql");
+		$affiliateid = @mysqli_insert_id($db);
+
+		// Return message with password to affiliate...
+		if ($receiptformat == "html") $returnmessages["$fulfilmentoptionid"] = "<tr><td colspan=\"2\"><table width=\"100%\" cellpadding=\"5\"><tr><td bgcolor=\"#ffffff\" align=\"left\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">You have been signed up with the $ashopname affiliate program!<br>Your user name is: <b>$affuser</b>, and your password: <b>$affpassword</b><br>To manually refer customers use this referralcode: <b>$referralcodenumber</b><br>Login to get your link code and check your stats at <b><a href=\"$ashopurl/affiliate/login.php\">$ashopurl/affiliate/login.php</a></b></font></td></tr></table></td></tr>";
+		else $returnmessages["$fulfilmentoptionid"] = "
+		You have been signed up with the $ashopname affiliate program!
+		Your user name is: $affuser, and your password: $affpassword
+		To manually refer customers use this referralcode: $referralcodenumber
+		Login to get your link code and check your stats at: $ashopurl/affiliate/login.php
+		";
+	}
+}
+?>

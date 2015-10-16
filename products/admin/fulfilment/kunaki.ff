@@ -1,0 +1,206 @@
+<?php
+// Kunaki...
+$fulfilmentname = "Kunaki";
+
+// Settings...
+$kunakiurl = "https://Kunaki.com/XMLService.ASP";
+$kunakimode = "Live";
+$internationalshipping = "Air Mail";
+$usshipping = "USPS First Class Mail";
+
+$ff_parameters['fulfilemail'] = "false";
+$ff_parameters['fulfilmessage'] = "false";
+$ff_parameters['userid'] = "true";
+$ff_parameters['password'] = "true";
+$ff_parameters['url'] = "false";
+$ff_parameters['parameternames'] = "false";
+$ff_parameters['extrafields'] = "false";
+$ff_parameters['returnresult'] = "true";
+$ff_parameters['discount'] = "false";
+$ff_parameters['ecardimage'] = "false";
+$ff_parameters['ecardfont'] = "false";
+$ff_parameters['ecardtextcolor'] = "false";
+$ff_parameters['ecardtexttop'] = "false";
+$ff_parameters['ecardtextleft'] = "false";
+$ff_parameters['ecardtextright'] = "false";
+
+$ff_prodparameters['productid'] = "false";
+$ff_prodparameters['productidlist'] = "true";
+$ff_prodparameters['labelnumber'] = "false";
+$ff_prodparameters['packagenumber'] = "false";
+$ff_prodparameters['parameternames'] = "false";
+
+if ($dofulfilment) {
+	if ($fulfilreturnmessage) $returnmessages["$fulfilmentoptionid"] = "";
+	$xmlproducts = "";
+	if($productsinfo) foreach($productsinfo as $productnumber => $productinfo) {
+		if($productinfo) foreach($productinfo as $key => $value) {
+			if($key == "quantity") $thisffquantity = $value;
+			if($key == "ffproductid") $thisffproductid = $value;
+		}
+		if (strpos($thisffproductid,"|")) {
+			$ffproductids = explode("|", $thisffproductid);
+			foreach($ffproductids as $thispartffproductid) if (!empty($thispartffproductid)) $xmlproducts .= "\n<Product>\n<ProductId>$thispartffproductid</ProductId>\n<Quantity>$thisffquantity</Quantity>\n</Product>";
+		} else if (!empty($thisffproductid)) $xmlproducts .= "\n<Product>\n<ProductId>$thisffproductid</ProductId>\n<Quantity>$thisffquantity</Quantity>\n</Product>";
+	}
+
+	// Get the right billing country name...
+	if (strlen($parsed_country) == 3) {
+		foreach ($threedigitcountries as $shortcountry => $longcountry) if ($parsed_country == $longcountry) $parsed_country = $shortcountry;
+	}
+	if (strlen($parsed_country) == 2) {
+		foreach ($countries as $shortcountry => $longcountry) if ($parsed_country == $shortcountry) $billingcountry = $longcountry;
+	} else $billingcountry = $parsed_country;
+
+	// Get the right shipping country name...
+	if (strlen($shippingcountry) == 3) {
+		foreach ($threedigitcountries as $shortcountry => $longcountry) if ($shippingcountry == $longcountry) $shippingcountry = $shortcountry;
+	}
+	if (strlen($shippingcountry) == 2) {
+		foreach ($countries as $shortcountry => $longcountry) if ($shippingcountry == $shortcountry) $shipcountry = $longcountry;
+	} else $shipcountry = $shippingcountry;
+	if ($parsed_country == "USA") $billingcountry = "United States";
+	if ($shippingcountry == "USA") $shipcountry = "United States";
+
+	// Create Kunaki fulfilment shipping check XML message...
+	$kunakixml = "<?xml version=\"1.0\" ?><ShippingOptions>";
+	if($shippingcountry) $kunakixml .= "<Country>$shipcountry</Country>\n";
+	else $kunakixml .= "<Country>$billingcountry</Country>\n";
+	if($shippingstate) $kunakixml .= "<State_Province>$shippingstate</State_Province>\n";
+	else $kunakixml .= "<State_Province>$parsed_state</State_Province>\n";
+	if($shippingzip) $kunakixml .= "<PostalCode>$shippingzip</PostalCode>\n";
+	else $kunakixml .= "<PostalCode>$parsed_zip</PostalCode>\n";
+	$kunakixml .= "$xmlproducts</ShippingOptions>";
+
+	// Convert special characters...
+	$kunakixml = str_replace("&","&amp;",$kunakixml);
+	$kunakixml = str_replace("å","&amp;aring;",$kunakixml);
+	$kunakixml = str_replace("Å","&amp;Aring;",$kunakixml);
+	$kunakixml = str_replace("ä","&amp;auml;",$kunakixml);
+	$kunakixml = str_replace("Ä","&amp;Auml;",$kunakixml);
+	$kunakixml = str_replace("ö","&amp;ouml;",$kunakixml);
+	$kunakixml = str_replace("Ö","&amp;Ouml;",$kunakixml);
+	$kunakixml = str_replace("ü","&amp;uuml;",$kunakixml);
+	$kunakixml = str_replace("Ü","&amp;Uuml;",$kunakixml);
+
+	// Check available shipping options...
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL,"$kunakiurl");
+	curl_setopt($ch, CURLOPT_HEADER, 0);
+	curl_setopt($ch, CURLOPT_POST, 1);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $kunakixml);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+	$xmlresult=curl_exec ($ch);
+	curl_close ($ch);
+
+	if ($billingcountry == "United States") $defaultshipping = $usshipping;
+	else $defaultshipping = $internationalshipping;
+
+	// If the default option is not available, select the cheapest available option...
+	if (!strstr($xmlresult,$defaultshipping)) {
+		// Turn the result into an array...
+		$kunakishipping = array();
+		$kunakishippingdelivery = array();
+		$kunakishippingprice = array();
+		if (strstr($xmlresult,"<Option>")) {
+			$resultarray = explode("<Option>",$xmlresult);
+			foreach($resultarray as $partnumber=>$xmlpart) {
+				if (strstr($xmlpart,"<Description>")) {
+					$subresultarray = explode("<Description>",$xmlpart);
+					$subresultarray = explode("</Description>",$subresultarray[1]);
+					$kunakishipping[$partnumber] = $subresultarray[0];
+				}
+				if (strstr($xmlpart,"<DeliveryTime>")) {
+					$subresultarray = explode("<DeliveryTime>",$xmlpart);
+					$subresultarray = explode("</DeliveryTime>",$subresultarray[1]);
+					$kunakishippingdelivery[$partnumber] = $subresultarray[0];
+				}
+				if (strstr($xmlpart,"<Price>")) {
+					$subresultarray = explode("<Price>",$xmlpart);
+					$subresultarray = explode("</Price>",$subresultarray[1]);
+					$kunakishippingprice[$partnumber] = $subresultarray[0];
+				}
+			}
+		}
+
+		asort($kunakishippingprice);
+		reset($kunakishippingprice);
+		$cheapestoption = key($kunakishippingprice);
+
+		if ($billingcountry == "United States" && !empty($kunakishipping[$cheapestoption])) $usshipping = $kunakishipping[$cheapestoption];
+		else if (!empty($kunakishipping[$cheapestoption])) $internationalshipping = $kunakishipping[$cheapestoption];
+	}
+
+	// Create Kunaki fulfilment XML message...
+	$kunakixml = "<?xml version=\"1.0\" ?><Order>\n<UserId>$fulfilmentuserid</UserId>\n<Password>$fulfilmentpassword</Password>\n<Mode>$kunakimode</Mode>\n";
+
+	if($shippingfirstname) $kunakixml .= "<Name>$shippingfirstname $shippinglastname</Name>\n";
+	else $kunakixml .= "<Name>$parsed_firstname $parsed_lastname</Name>\n";
+	if($shippingbusiness) $kunakixml .= "<Company>$shippingbusiness</Company>\n";
+	else $kunakixml .= "<Company></Company>\n";
+	if($shippingaddress) {
+		$kunakixml .= "<Address1>$shippingaddress</Address1>\n";
+		$kunakixml .= "<Address2>$shippingaddress2</Address2>\n";
+	} else {
+		$kunakixml .= "<Address1>$parsed_address</Address1>\n";
+		$kunakixml .= "<Address2></Address2>\n";
+	}
+	if($shippingcity) $kunakixml .= "<City>$shippingcity</City>\n";
+	else $kunakixml .= "<City>$parsed_city</City>\n";
+	if($shippingstate) $kunakixml .= "<State_Province>$shippingstate</State_Province>\n";
+	else $kunakixml .= "<State_Province>$parsed_state</State_Province>\n";
+	if($shippingzip) $kunakixml .= "<PostalCode>$shippingzip</PostalCode>\n";
+	else $kunakixml .= "<PostalCode>$parsed_zip</PostalCode>\n";
+	if($shippingcountry) {
+		$kunakixml .= "<Country>$shipcountry</Country>\n";
+		if ($shipcountry == "United States") $kunakixml .= "<ShippingDescription>$usshipping</ShippingDescription>\n";
+		else $kunakixml .= "<ShippingDescription>$internationalshipping</ShippingDescription>\n";
+	} else {
+		$kunakixml .= "<Country>$billingcountry</Country>\n";
+		if ($billingcountry == "United States") $kunakixml .= "<ShippingDescription>$usshipping</ShippingDescription>\n";
+		else $kunakixml .= "<ShippingDescription>$internationalshipping</ShippingDescription>\n";
+	}
+
+	$kunakixml .= "$xmlproducts\n</Order>";
+
+	// Convert special characters...
+	$kunakixml = str_replace("&","&amp;",$kunakixml);
+	$kunakixml = str_replace("å","&amp;aring;",$kunakixml);
+	$kunakixml = str_replace("Å","&amp;Aring;",$kunakixml);
+	$kunakixml = str_replace("ä","&amp;auml;",$kunakixml);
+	$kunakixml = str_replace("Ä","&amp;Auml;",$kunakixml);
+	$kunakixml = str_replace("ö","&amp;ouml;",$kunakixml);
+	$kunakixml = str_replace("Ö","&amp;Ouml;",$kunakixml);
+	$kunakixml = str_replace("ü","&amp;uuml;",$kunakixml);
+	$kunakixml = str_replace("Ü","&amp;Uuml;",$kunakixml);
+
+	$ch = curl_init();
+	if (file_exists("$ashoppath/admin/curl.inc.php")) include "$ashoppath/admin/curl.inc.php";
+	curl_setopt($ch, CURLOPT_URL,"$kunakiurl");
+	curl_setopt($ch, CURLOPT_HEADER, 0);
+	curl_setopt($ch, CURLOPT_POST, 1);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $kunakixml);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+	$xmlresult=curl_exec ($ch);
+	curl_close ($ch);
+
+	$checkresult = explode("<ErrorText>",$xmlresult);
+	$checkresult = explode("</ErrorText>",$checkresult[1]);
+	$checkresult = trim($checkresult[0]);
+	if($checkresult != "success") {
+		// Request failed, notify shop administrator...
+		$message="<html><head></head><body><font face=\"$font\"><p>A Kunaki fulfilment request from $ashopname for the order $invoiceid failed!</p><p>Request Kunaki fulfilment for this order manually at: http://kunaki.com/Login.asp</font></p><p>DEBUG INFORMATION:<br>XML message...<br>$kunakixml</p><p>Kunaki's response...<br>$xmlresult</p></body></html>";
+		$headers = "From: ".un_html($ashopname,1)."<$ashopemail>\nX-Sender: <$ashopemail>\nX-Mailer: PHP\nX-Priority: 3\nReturn-Path: <$ashopemail>\nMIME-Version: 1.0\nContent-Type: text/html; charset=iso-8859-1\n";
+		@ashop_mail("$ashopemail",un_html($ashopname,1)." - Kunaki fulfilment failed!","$message","$headers");
+	} else if ($fulfilreturnmessage) {
+		if ($receiptformat == "html") $returnmessages["$fulfilmentoptionid"] = "<tr><td colspan=\"2\"><table width=\"100%\" cellpadding=\"5\"><tr><td bgcolor=\"#ffffff\" align=\"left\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">Your CDs/DVDs will be shipped to you immediately.</font></td></tr></table></td></tr>";
+		else $returnmessages["$fulfilmentoptionid"] = "
+		Your CDs/DVDs will be shipped to you immediately.
+		";
+	}
+}
+?>
