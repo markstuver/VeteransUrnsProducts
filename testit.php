@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<head>
+<title>My first PHP Page</title>
+</head>
+<body>
+This is normal HTML code
+
+<?php 
+	
+    $var = 5;
+?>
+<br>
+
+ $var = 10;<br />
+
+The variable $var has a value of: <?=$var ?>
+
+<br />
+</body>
+</html>
